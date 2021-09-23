@@ -1,0 +1,17 @@
+/* Normalize */
+@import url(./vendor/normalize.css);
+/*-------------------------*/
+
+
+/* Шрифты */
+@import url(./vendor/fonts/fonts.css);
+/*-------------------------*/
+
+/* Глобальные стили */
+body {
+  font-family: 'Inter', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: white;
+  background-color: black;
+}
