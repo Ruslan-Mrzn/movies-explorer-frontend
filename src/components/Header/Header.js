@@ -31,7 +31,7 @@ function Header() {
           Листайте ниже, чтобы узнать больше про этот проект и его создателя.
         </p>
         <Link to="/" className="header__learn-more-link link" >
-          <span className="header__link-text">Узнать больше</span>
+          Узнать больше
         </Link>
       </div>
     </header>
