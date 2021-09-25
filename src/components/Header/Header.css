@@ -3,22 +3,13 @@
 }
 
 .header__wrapper {
-  min-height: 710px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.header__nav {
-  align-self: stretch;
   min-height: 74px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
 }
 
-.header__auth {
+.header__navigation {
   display: flex;
   align-items: center;
   margin-left: auto;
@@ -36,131 +27,14 @@
   border-radius: 3px;
 }
 
-.header__image {
-  width: 210px;
-  height: 206px;
-  margin-top: 70px;
-}
-
-.header__title {
-  margin: 0;
-  margin-top: 44px;
-  font-weight: 400;
-  font-size: 30px;
-  line-height: 38px;
-  text-align: center;
-  letter-spacing: -0.04em;
-}
-
-.header__paragraph {
-  margin-top: 24px;
-  max-width: 260px;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 16px;
-  text-align: center;
-  opacity: 0.5;
-}
-
-.header__learn-more-link {
-  position: relative;
-  margin: 0;
-  margin-top: auto;
-  margin-bottom: 30px;
-  padding: 10px 20px;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.header__learn-more-link::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border: 1px solid white;
-  border-radius: 3px;
-  opacity: 0.6;
-}
-
 
 @media screen and (min-width: 768px) {
-  .header__wrapper {
-    min-height: 924px;
-  }
-
-  .header__auth {
-    /* display: flex;
-    align-items: center;
-    margin-left: auto; */
+  .header__navigation {
     font-size: 12px;
-    /* line-height: 16px;
-    font-weight: 500; */
   }
 
   .header__signin-link {
     margin-left: 30px;
     padding: 8px 20px;
-
-    /* color: black; */
-    /* background-color: #3ddc84; */
-    /* border-radius: 3px; */
-  }
-
-  .header__image {
-    width: 310px;
-    height: 304px;
-    margin-top: 140px;
-  }
-
-  .header__title {
-    margin-top: 48px;
-    font-size: 40px;
-    line-height: 50px;
-    letter-spacing: inherit;
-  }
-
-  .header__paragraph {
-    margin-top: 22px;
-  }
-
-  .header__learn-more-link {
-    margin-bottom: 76px;
-  }
-}
-
-
-@media screen and (min-width: 1280px) {
-  .header__wrapper {
-    position: relative;
-    min-height: 648px;
-    align-items: flex-start;
-  }
-
-  .header__image {
-    position: absolute;
-    margin: 0;
-    top: 149px;
-    right: 70px;
-  }
-
-  .header__title {
-    max-width: 640px;
-    margin-top: 75px;
-    font-size: 50px;
-    line-height: 58px;
-    text-align: left;
-  }
-
-  .header__paragraph {
-    margin-top: 36px;
-    max-width: 310px;
-    text-align: left;
-  }
-
-  .header__learn-more-link {
-    margin-bottom: 75px;
   }
 }
