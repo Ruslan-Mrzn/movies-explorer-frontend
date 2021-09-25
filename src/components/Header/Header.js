@@ -25,7 +25,7 @@ function Header() {
         </div>
         <img className="header__image" src={earthImage} alt="логотип Земной шар" />
         <h1 className="header__title">
-          Учебный проект студента факультета Веб-разработки.
+          Учебный проект студента факультета Веб&#8209;разработки.
         </h1>
         <p className="header__paragraph">
           Листайте ниже, чтобы узнать больше про этот проект и его создателя.

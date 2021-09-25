@@ -28,6 +28,7 @@ body {
 
 .wrapper {
   min-width: 320px;
+  max-width: 1280px;
   padding: 0 14px;
   margin: 0 auto;
 }
@@ -36,4 +37,17 @@ body {
   text-decoration: none;
   color: inherit;
 }
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    padding: 0 30px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .wrapper {
+    padding: 0 70px;
+  }
+}
+
 /*-------------------------*/
