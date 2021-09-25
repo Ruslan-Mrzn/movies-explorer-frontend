@@ -1,0 +1,26 @@
+.about-project__wrapper {
+  padding: 0 18px;
+  margin: 0 auto;
+  min-height: 641px;
+}
+
+.about-project__title {
+  margin: 0;
+  padding: 0;
+  padding-top: 70px;
+  padding-bottom: 28px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -.04em;
+  border-bottom: 1px solid #dadada;
+}
+
+@media screen and (min-width: 768px) {
+  .about-project__title {
+    padding-top: 90px;
+    padding-bottom: 23px;
+    font-size: 22px;
+    line-height: 27px;
+  }
+}

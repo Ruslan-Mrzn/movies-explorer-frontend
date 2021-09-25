@@ -4,6 +4,9 @@
 
 .navtab__wrapper {
   min-height: 66px;
+  max-width: 1280px;
+  padding: 0 14px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -11,6 +14,8 @@
 
 .navtab__learn-more-link {
   position: relative;
+  text-decoration: none;
+  color: inherit;
   padding: 10px 20px;
   font-weight: 500;
   font-size: 12px;
@@ -32,6 +37,7 @@
 @media screen and (min-width: 768px) {
   .navtab__wrapper {
     min-height: 112px;
+    padding: 0 30px;
   }
 }
 
@@ -39,5 +45,6 @@
   .navtab__wrapper {
     justify-content: start;
     min-height: 111px;
+    padding: 0 70px;
   }
 }

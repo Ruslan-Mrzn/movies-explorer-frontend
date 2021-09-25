@@ -4,6 +4,9 @@
 
 .promo__wrapper {
   min-height: 570px;
+  max-width: 1280px;
+  padding: 0 14px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -43,6 +46,7 @@
 @media screen and (min-width: 768px) {
   .promo__wrapper {
     min-height: 738px;
+    padding: 0 30px;
   }
 
   .promo__image {
@@ -68,6 +72,7 @@
 @media screen and (min-width: 1280px) {
   .promo__wrapper {
     position: relative;
+    padding: 0 70px;
     min-height: 463px;
     align-items: flex-start;
   }
