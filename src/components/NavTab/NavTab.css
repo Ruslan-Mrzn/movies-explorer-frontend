@@ -1,0 +1,43 @@
+.navtab {
+  background-color: #073042;
+}
+
+.navtab__wrapper {
+  min-height: 66px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.navtab__learn-more-link {
+  position: relative;
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.navtab__learn-more-link::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 1px solid white;
+  border-radius: 3px;
+  opacity: 0.6;
+}
+
+@media screen and (min-width: 768px) {
+  .navtab__wrapper {
+    min-height: 112px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .navtab__wrapper {
+    justify-content: start;
+    min-height: 111px;
+  }
+}
