@@ -6,7 +6,7 @@ function AboutProject() {
   return (
     <section className="about-project">
       <div className="about-project__wrapper">
-        <h2 className="about-project__title">
+        <h2 className="about-project__title" id="about-project">
           О проекте
         </h2>
         <ul className="about-project__definition-list">
@@ -20,12 +20,12 @@ function AboutProject() {
           </li>
 
           <li className="about-project__definition">
-            <dt className="about-project__definition-title">
+            <h3 className="about-project__definition-title">
               На выполнение диплома ушло 5 недель
-            </dt>
-            <dd className="about-project__definition-value">
+            </h3>
+            <p className="about-project__definition-value">
               У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было соблюдать, чтобы успешно защититься.
-            </dd>
+            </p>
           </li>
         </ul>
         <div className="about-project__scheme">
