@@ -7,6 +7,7 @@
 @import url(./vendor/fonts/fonts.css);
 /*-------------------------*/
 
+
 /* Глобальные стили */
 *,
 *::before,
@@ -21,5 +22,28 @@ body {
   color: white;
   background-color: #202020;
   min-width: 320px;
+}
+/*-------------------------*/
+
+
+/* Buttons hover */
+.button {
+  transition: opacity .4s ease;
+}
+
+.button:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+/*-------------------------*/
+
+
+/* Links hover */
+.link {
+  transition: opacity .4s ease;
+}
+
+.link:hover {
+  opacity: .7;
 }
 /*-------------------------*/
