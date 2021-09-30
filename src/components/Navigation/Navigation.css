@@ -1,0 +1,32 @@
+.navigation {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.navigation__link {
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  color: inherit;
+}
+
+.navigation__link_type_signin {
+  margin-left: 14px;
+  padding: 5px 12px;
+  color: black;
+  background-color: #3ddc84;
+  border-radius: 3px;
+}
+
+@media screen and (min-width: 768px) {
+  .navigation__link {
+    font-size: 12px;
+  }
+
+  .navigation__link_type_signin {
+    margin-left: 30px;
+    padding: 8px 20px;
+  }
+}
