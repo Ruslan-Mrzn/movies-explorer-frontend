@@ -2,7 +2,16 @@
   background-color: #073042;
 }
 
+.header_type_unauthorized {
+  background-color: #073042;
+}
+
+.header_type_authorized {
+  background-color: #202020;
+}
+
 .header__wrapper {
+  position: relative;
   min-height: 74px;
   max-width: 1280px;
   padding: 0 14px;

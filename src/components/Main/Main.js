@@ -13,7 +13,7 @@ import './Main.css';
 function Main() {
   return (
     <>
-      <Header />
+      <Header autorized={false} />
       <Promo />
       <NavTab />
       <AboutProject />
