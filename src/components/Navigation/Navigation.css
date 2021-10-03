@@ -170,6 +170,20 @@
   .navigation__link_type_menu {
     padding-bottom: 4px;
   }
+
+  .navigation__menu-toggle {
+    top: 26px;
+    right: 38px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .navigation__menu-toggle::before {
+    height: 3px;
+    box-shadow: 0 10px 0 white,
+                0 20px 0 white;
+  }
+
 }
 
 @media screen and (min-width: 769px) {
