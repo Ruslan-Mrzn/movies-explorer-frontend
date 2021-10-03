@@ -1,5 +1,6 @@
 .header {
   background-color: #073042;
+
 }
 
 .header_type_unauthorized {
@@ -8,6 +9,14 @@
 
 .header_type_authorized {
   background-color: #202020;
+}
+
+.header_overflow_visible {
+  overflow: visible;
+}
+
+.header_overflow_hidden {
+  overflow: hidden;
 }
 
 .header__wrapper {

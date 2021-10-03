@@ -5,14 +5,14 @@ import logo from '../../images/logo.svg'
 
 import './Header.css';
 
-function Header(authorized) {
+function Header({authorized, onClickMenu, isMenuOpened}) {
   return (
-    <header className={`header header_type_${authorized ? 'authorized' : 'unauthorized'}`}>
+    <header className={`header header_type_${authorized ? 'authorized' : 'unauthorized'} header_overflow_${isMenuOpened ? 'visible' : 'hidden'}`}>
       <div className="header__wrapper">
         <Link to="/" className="header__logo-link" >
           <img className="header__logo" src={logo} alt="логотип" />
         </Link>
-        <Navigation />
+        <Navigation authorized={authorized} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened}/>
       </div>
     </header>
   );

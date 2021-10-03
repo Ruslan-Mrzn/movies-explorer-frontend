@@ -72,6 +72,7 @@
   height: 100vh;
   top:0;
   background-color: #202020;
+  z-index: 2;
 }
 
 .navigation__item {
@@ -130,18 +131,18 @@
                 0 16px 0 white;
   }
 
-  .navigation__list_state_opened ~ .navigation__menu-toggle {
+  .navigation_state_opened > .navigation__menu-toggle {
     top: 19px;
     right: 20px;
   }
 
-  .navigation__list_state_opened ~ .navigation__menu-toggle::before {
+  .navigation_state_opened > .navigation__menu-toggle::before {
     box-shadow: none;
     top: 50%;
     transform: translateY(-50%) rotate(45deg);
   }
 
-  .navigation__list_state_opened ~ .navigation__menu-toggle::after {
+  .navigation_state_opened > .navigation__menu-toggle::after {
     position: absolute;
     content: '';
     top: 50%;
@@ -150,11 +151,6 @@
     height: 3px;
     background-color: white;
     transform: translateY(-50%) rotate(-45deg);
-  }
-
-  .navigation__list_state_closed {
-    right: -100%;
-    transition: right .4s linear;
   }
 
   .navigation__list_state_opened {
@@ -237,7 +233,4 @@
     margin-top: 0;
     margin-left: 30px;
   }
-
-
-
 }

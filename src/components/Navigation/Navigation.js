@@ -4,16 +4,13 @@ import { Link, useLocation } from 'react-router-dom';
 import './Navigation.css';
 
 
-function Navigation(autorized) {
-  const [isOpened, setIsOpened] = React.useState(false);
-
-  const onClick = () => {
-    setIsOpened(!isOpened);
+function Navigation({authorized, isMenuOpened, onClickMenu}) {
+  const handleOnClickMenu = () => {
+    onClickMenu(isMenuOpened);
   }
-
   return (
     <>
-      {!autorized &&
+      {!authorized &&
       <nav className="navigation navigation_type_unauthorized">
         <Link to="signup" className="navigation__link" >
           Регистрация
@@ -23,34 +20,33 @@ function Navigation(autorized) {
         </Link>
       </nav>}
 
-      {autorized &&
-      <nav className={`navigation navigation_state_${isOpened ? 'opened' : 'closed'}`}>
-
-        <ul class={`navigation__list navigation__list_state_${isOpened ? 'opened' : 'closed'}`}>
-            <li class="navigation__item">
-              <Link to="signup" className=" link navigation__link navigation__link_type_menu" >
+      {authorized &&
+      <nav className={`navigation navigation_state_${isMenuOpened ? 'opened' : 'closed'}`}>
+        <button className="navigation__menu-toggle button" type="button" onClick={handleOnClickMenu}>
+          <span className="visually-hidden">Открыть меню</span>
+        </button>
+        <ul className={`navigation__list navigation__list_state_${isMenuOpened ? 'opened' : 'closed'}`}>
+            <li className="navigation__item">
+              <Link to="signup" className="link navigation__link navigation__link_type_menu" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
                 Главная
               </Link>
             </li>
-            <li class="navigation__item">
-              <Link to="signup" className="link navigation__link navigation__link_type_menu navigation__link_state_active" >
+            <li className="navigation__item">
+              <Link to="signup" className="link navigation__link navigation__link_type_menu navigation__link_state_active" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
                 Фильмы
               </Link>
             </li>
-            <li class="navigation__item">
-              <Link to="signup" className="link navigation__link navigation__link_type_menu" >
+            <li className="navigation__item">
+              <Link to="signup" className="link navigation__link navigation__link_type_menu" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
                 Сохранённые фильмы
               </Link>
             </li>
-            <li class="navigation__item">
-              <Link to="signup" className="link navigation__link navigation__link_type_account" >
+            <li className="navigation__item">
+              <Link to="signup" className="link navigation__link navigation__link_type_account" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
                 Аккаунт
               </Link>
             </li>
           </ul>
-          <button class="navigation__menu-toggle button" type="button" onClick={onClick}>
-          <span class="visually-hidden">Открыть меню</span>
-        </button>
       </nav>}
     </>
   );
