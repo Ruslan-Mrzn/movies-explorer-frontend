@@ -32,12 +32,12 @@ function Navigation({authorized, isMenuOpened, onClickMenu}) {
               </Link>
             </li>
             <li className="navigation__item">
-              <Link to="signup" className="link navigation__link navigation__link_type_menu navigation__link_state_active" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
+              <Link to="movies" className="link navigation__link navigation__link_type_menu navigation__link_state_active" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
                 Фильмы
               </Link>
             </li>
             <li className="navigation__item">
-              <Link to="signup" className="link navigation__link navigation__link_type_menu" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
+              <Link to="saved-movies" className="link navigation__link navigation__link_type_menu" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
                 Сохранённые фильмы
               </Link>
             </li>

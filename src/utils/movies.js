@@ -22,6 +22,7 @@ const moviesData = [
     "poster": poster_1,
     "title": "33 слова о дизайне",
     "duration": "1ч42м",
+    "saved": true,
   },
 
   {
@@ -36,6 +37,7 @@ const moviesData = [
     "poster": poster_3,
     "title": "33 слова о дизайне",
     "duration": "1ч42м",
+    "saved": true,
   },
 
   {
@@ -50,6 +52,7 @@ const moviesData = [
     "poster": poster_5,
     "title": "33 слова о дизайне",
     "duration": "1ч42м",
+    "saved": true,
   },
 
   {
@@ -78,6 +81,7 @@ const moviesData = [
     "poster": poster_9,
     "title": "33 слова о дизайне",
     "duration": "1ч42м",
+    "saved": true,
   },
 
   {
@@ -106,6 +110,7 @@ const moviesData = [
     "poster": poster_13,
     "title": "33 слова о дизайне",
     "duration": "1ч42м",
+    "saved": true,
   },
 
   {
