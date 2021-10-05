@@ -71,3 +71,25 @@
   line-height: 13px;
   color: #8b8b8b;
 }
+
+@media screen and (min-width: 768px) {
+  .movie-card {
+    min-height: 257px;
+  }
+
+  .movie-card__img-container {
+    min-height: 190px;
+    height: 190px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .movie-card {
+    min-height: 218px;
+  }
+
+  .movie-card__img-container {
+    min-height: 151px;
+    height: 151px;
+  }
+}

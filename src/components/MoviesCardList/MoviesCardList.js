@@ -7,7 +7,7 @@ import './MoviesCardList.css';
 
 function MoviesCardList({data}) {
 
-  const [screenWidth, setScreenWidth] = React.useState(null);
+  const [screenWidth, setScreenWidth] = React.useState(document.documentElement.clientWidth);
 
   const handleResizeWidth = React.useCallback (() => {
     setScreenWidth(document.documentElement.clientWidth)
@@ -25,7 +25,7 @@ function MoviesCardList({data}) {
     <section className="movies">
       <ul className="movies__list">
         {
-          screenWidth < 500 &&
+          screenWidth < 640 &&
           data.slice(0, 5).map((card, i) => (
             <MoviesCard key={card._id} card={card}
               // onCardSave={onCardSave} onCardDelete={onCardDelete}
@@ -33,7 +33,7 @@ function MoviesCardList({data}) {
           ))
         }
         {
-          screenWidth >= 500 && screenWidth < 900 &&
+          screenWidth >= 640 && screenWidth < 1000 &&
           data.slice(0, 8).map((card, i) => (
             <MoviesCard key={card._id} card={card}
               // onCardSave={onCardSave} onCardDelete={onCardDelete}
@@ -42,7 +42,7 @@ function MoviesCardList({data}) {
         }
 
         {
-          screenWidth >= 900 &&
+          screenWidth >= 1000 &&
           data.slice(0, 16).map((card, i) => (
             <MoviesCard key={card._id} card={card}
               // onCardSave={onCardSave} onCardDelete={onCardDelete}
@@ -51,6 +51,8 @@ function MoviesCardList({data}) {
         }
 
       </ul>
+
+      <button type="button" className="movies__show-more">Ещё</button>
     </section>
   );
 }

@@ -157,6 +157,11 @@
     right: 0;
     transition: right .4s linear;
   }
+
+  .navigation__list_state_closed {
+    right: -100%;
+    transition: right .4s linear;
+  }
 }
 
 
