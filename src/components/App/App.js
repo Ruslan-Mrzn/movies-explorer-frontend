@@ -9,6 +9,9 @@ import Profile from "../Profile/Profile";
 import NotFound from "../NotFound/NotFound";
 import moviesData from "../../utils/movies";
 
+import { Route, Switch} from 'react-router-dom';
+
+
 function App() {
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
@@ -34,13 +37,37 @@ function App() {
 
 
   return (
-    // <Main authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-    //<Movies data={movies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-    //<SavedMovies data={savedMovies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-    // <Register />
-    // <Login />
-    // <Profile authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-    <NotFound />
+    <Switch>
+      <Route path="/" exact>
+        <Main authorized={false} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+      </Route>
+
+      <Route path="/movies">
+        <Movies data={movies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+      </Route>
+
+      <Route path="/saved-movies">
+        <SavedMovies data={savedMovies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+      </Route>
+
+      <Route path="/profile">
+        <Profile authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+      </Route>
+
+      <Route path="/signup">
+        <Register />
+      </Route>
+
+      <Route path="/signin">
+        <Login />
+      </Route>
+
+      <Route path="/404">
+        <NotFound />
+      </Route>
+
+    </Switch>
+
   );
 }
 

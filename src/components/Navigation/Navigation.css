@@ -60,7 +60,7 @@
 .navigation__list {
   padding: 144px 10px 48px 10px;
   margin: 0;
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -71,6 +71,7 @@
   max-width: 520px;
   height: 100vh;
   top:0;
+  right: 0;
   background-color: #202020;
   z-index: 2;
 }
@@ -132,6 +133,7 @@
   }
 
   .navigation_state_opened > .navigation__menu-toggle {
+    position: fixed;
     top: 19px;
     right: 20px;
   }
@@ -154,13 +156,11 @@
   }
 
   .navigation__list_state_opened {
-    right: 0;
-    transition: right .4s linear;
+    display: flex;
   }
 
   .navigation__list_state_closed {
-    right: -100%;
-    transition: right .4s linear;
+    display: none;
   }
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './Navigation.css';
 
@@ -12,10 +12,10 @@ function Navigation({authorized, isMenuOpened, onClickMenu}) {
     <>
       {!authorized &&
       <nav className="navigation navigation_type_unauthorized">
-        <Link to="signup" className="navigation__link" >
+        <Link to="signup" className="link navigation__link" >
           Регистрация
         </Link>
-        <Link to="signin" className="navigation__link navigation__link_type_signin" >
+        <Link to="signin" className="link navigation__link navigation__link_type_signin" >
           Войти
         </Link>
       </nav>}
@@ -27,7 +27,7 @@ function Navigation({authorized, isMenuOpened, onClickMenu}) {
         </button>
         <ul className={`navigation__list navigation__list_state_${isMenuOpened ? 'opened' : 'closed'}`}>
             <li className="navigation__item">
-              <Link to="signup" className="link navigation__link navigation__link_type_menu" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
+              <Link to="/" className="link navigation__link navigation__link_type_menu" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
                 Главная
               </Link>
             </li>
@@ -42,7 +42,7 @@ function Navigation({authorized, isMenuOpened, onClickMenu}) {
               </Link>
             </li>
             <li className="navigation__item">
-              <Link to="signup" className="link navigation__link navigation__link_type_account" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
+              <Link to="profile" className="link navigation__link navigation__link_type_account" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
                 Аккаунт
               </Link>
             </li>

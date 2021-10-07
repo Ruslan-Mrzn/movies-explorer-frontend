@@ -17,7 +17,7 @@ function Main({onClickMenu, isMenuOpened, authorized}) {
     <>
       <Header bgColor={true} isMenuOpened={isMenuOpened}>
         <Logo />
-        <Navigation autorized={authorized} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened}/>
+        <Navigation authorized={authorized} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened}/>
       </Header>
       <Promo />
       <NavTab />

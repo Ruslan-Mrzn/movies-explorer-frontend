@@ -8,6 +8,12 @@ function MoviesCard({card}) {
 
   const location = useLocation();
 
+  const [isCardSaved, setIsCardSaved] = React.useState(card.saved)
+
+  const handleOnClick = () => {
+    setIsCardSaved(!card.saved)
+  }
+
   return (
     <li className="movie-card">
       <article className="movie-card__card">
@@ -18,8 +24,8 @@ function MoviesCard({card}) {
           <h2 className="movie-card__title">{card.title}</h2>
           {
             location.pathname === '/movies' &&
-            <button type="button" className={`button movie-card__save-btn ${card.saved ? 'movie-card__save-btn_state_active' : ''}`} aria-label={`${card.saved ? 'удалить фильм из сохранных' : 'сохранить фильм'}`}
-            // onClick={handleSaveMovie}
+            <button type="button" className={`button movie-card__save-btn ${isCardSaved ? 'movie-card__save-btn_state_active' : ''}`} aria-label={`${isCardSaved ? 'удалить фильм из сохранных' : 'сохранить фильм'}`}
+            onClick={handleOnClick}
             >
             </button>
           }
@@ -27,13 +33,12 @@ function MoviesCard({card}) {
           {
             location.pathname === '/saved-movies' &&
             <button type="button" className="button movie-card__unsave-btn" aria-label="удалить фильм из сохранных"
-              // onClick={handleSaveMovie}
+              // onClick={handleOnClick}
             ></button>
           }
           <span className="movie-card__duration">{card.duration}</span>
         </div>
       </article>
-      {/* <button type="button" className={cardDeleteButtonClassName} aria-label="удалить фото" onClick={handleCardDelete}></button> */}
     </li>
   );
 }
