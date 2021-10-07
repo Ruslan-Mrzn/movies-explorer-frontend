@@ -5,7 +5,8 @@ import Movies from '../Movies/Movies';
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
-import Profile from "../Profile/Profile"
+import Profile from "../Profile/Profile";
+import NotFound from "../NotFound/NotFound";
 import moviesData from "../../utils/movies";
 
 function App() {
@@ -38,7 +39,8 @@ function App() {
     //<SavedMovies data={savedMovies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
     // <Register />
     // <Login />
-    <Profile authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+    // <Profile authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+    <NotFound />
   );
 }
 
