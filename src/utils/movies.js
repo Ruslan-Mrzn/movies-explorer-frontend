@@ -1,4 +1,3 @@
-import React from "react";
 import poster_1 from "../images/movies-posters/poster_1.png"
 import poster_2 from "../images/movies-posters/poster_2.png"
 import poster_3 from "../images/movies-posters/poster_3.png"

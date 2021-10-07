@@ -1,5 +1,4 @@
 import React from "react";
-import { Link, useLocation } from 'react-router-dom';
 import photo from '../../images/developer-photo.jpg'
 
 import './AboutMe.css';

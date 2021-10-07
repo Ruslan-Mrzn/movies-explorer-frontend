@@ -32,10 +32,6 @@ function App() {
     }))
   },[])
 
-  console.log(movies)
-  console.log(savedMovies)
-
-
   return (
     <Switch>
       <Route path="/" exact>
