@@ -3,12 +3,12 @@
 
 }
 
-.header_type_unauthorized {
+.header_type_colored {
   background-color: #073042;
 }
 
-.header_type_authorized {
-  background-color: #202020;
+.header_type_uncolored {
+  background-color: transparent;
 }
 
 .header_overflow_visible {
@@ -34,6 +34,7 @@
   .header__wrapper {
     padding: 0 30px;
   }
+
   .header__link {
     font-size: 12px;
   }

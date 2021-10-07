@@ -1,5 +1,7 @@
 import React from "react";
 import Header from "../Header/Header";
+import Logo from "../Logo/Logo";
+import Navigation from "../Navigation/Navigation"
 import Promo from "../Promo/Promo";
 import NavTab from "../NavTab/NavTab";
 import AboutProject from "../AboutProject/AboutProject";
@@ -10,10 +12,13 @@ import Footer from "../Footer/Footer";
 
 import './Main.css';
 
-function Main() {
+function Main({onClickMenu, isMenuOpened, authorized}) {
   return (
     <>
-      <Header autorized={false} />
+      <Header bgColor={true} isMenuOpened={isMenuOpened}>
+        <Logo />
+        <Navigation autorized={authorized} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened}/>
+      </Header>
       <Promo />
       <NavTab />
       <AboutProject />

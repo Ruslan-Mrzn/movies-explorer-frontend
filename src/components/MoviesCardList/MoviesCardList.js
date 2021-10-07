@@ -13,13 +13,16 @@ function MoviesCardList({data}) {
     setScreenWidth(document.documentElement.clientWidth)
   }, [setScreenWidth]);
 
+
   React.useEffect(() => {
+
     window.addEventListener('resize', handleResizeWidth);
 
-  }, [handleResizeWidth])
+  }, [handleResizeWidth]);
 
-
-
+  // React.useEffect( () => {
+  //   setScreenWidth(document.documentElement.clientWidth);
+  // }, []);
 
   return (
     <section className="movies">

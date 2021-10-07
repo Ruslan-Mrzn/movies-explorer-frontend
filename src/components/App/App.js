@@ -3,6 +3,9 @@ import './App.css';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from "../SavedMovies/SavedMovies";
+import Register from "../Register/Register";
+import Login from "../Login/Login";
+import Profile from "../Profile/Profile"
 import moviesData from "../../utils/movies";
 
 function App() {
@@ -30,10 +33,12 @@ function App() {
 
 
   return (
-    // <Main />
-    // <Movies data={movies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-    <SavedMovies data={savedMovies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-
+    // <Main authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+    //<Movies data={movies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+    //<SavedMovies data={savedMovies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+    // <Register />
+    // <Login />
+    <Profile authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
   );
 }
 
