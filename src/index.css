@@ -1,0 +1,69 @@
+/* Normalize */
+@import url(./vendor/normalize.css);
+/*-------------------------*/
+
+
+/* Шрифты */
+@import url(./vendor/fonts/fonts.css);
+/*-------------------------*/
+
+
+/* Глобальные стили */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: white;
+  background-color: #202020;
+  min-width: 320px;
+  min-height: 100vh;
+}
+/*-------------------------*/
+
+
+/* Buttons hover */
+.button {
+  transition: opacity .4s ease;
+}
+
+.button:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+/*-------------------------*/
+
+
+/* Links hover */
+.link {
+  transition: opacity .4s ease;
+}
+
+.link:hover {
+  opacity: .7;
+}
+/*-------------------------*/
+
+
+/* visually-hidden */
+.visually-hidden {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+
+  white-space: nowrap;
+
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+/*-------------------------*/

@@ -1,0 +1,52 @@
+.header {
+  background-color: #073042;
+
+}
+
+.header_type_colored {
+  background-color: #073042;
+}
+
+.header_type_uncolored {
+  background-color: transparent;
+}
+
+.header_overflow_visible {
+  overflow: visible;
+}
+
+.header_overflow_hidden {
+  overflow: hidden;
+}
+
+.header__wrapper {
+  position: relative;
+  min-height: 74px;
+  max-width: 1280px;
+  padding: 0 14px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@media screen and (min-width: 768px) {
+  .header__wrapper {
+    padding: 0 30px;
+  }
+
+  .header__link {
+    font-size: 12px;
+  }
+
+  .header__link_type_signin {
+    margin-left: 30px;
+    padding: 8px 20px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .header__wrapper {
+    padding: 0 70px;
+  }
+}

@@ -1,0 +1,252 @@
+.profile__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 410px;
+  padding: 70px 30px 40px 30px;
+  margin: 0 auto;
+  min-height: calc(100vh - 74px);
+}
+
+.form {
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form__title {
+  padding: 0;
+  margin: 0;
+  margin-top: 47px;
+  word-break: break-all;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+}
+
+.form_type_profile .form__title {
+  margin-top: 0;
+}
+
+.form__labels-block {
+  margin-top: 80px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: stretch;
+  row-gap: 20px;
+}
+
+.form_type_profile .form__labels-block {
+  margin-top: 65px;
+  row-gap: 0;
+}
+
+.form__label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  row-gap: 10px;
+  cursor: pointer;
+}
+
+.form_type_profile .form__label {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  border-bottom: 1px solid #424242;
+}
+
+.form_type_profile .form__label:last-of-type {
+  border-bottom: none;
+}
+
+
+.form__label-text {
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #8B8B8B;
+}
+
+.form_type_profile .form__label-text {
+  margin-right: 15px;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #FFFFFF;
+}
+
+.form__input {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2F2F2F;
+
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  color: white;
+}
+
+.form_type_profile .form__input {
+  flex-grow: 1;
+  padding: 0;
+  justify-content: right;
+  background-color: transparent;
+
+  font-size: 11px;
+  line-height: 13px;
+  text-align: right;
+  color: #FFFFFF;
+}
+
+.form__input[type="email"] {
+  font-weight: 500;
+}
+
+.form__error {
+  margin-top: 10px;
+  align-self: flex-start;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #EE3465;
+  visibility: hidden;
+}
+
+.form__error_visible {
+  visibility: visible;
+}
+
+.form__submit-button {
+  margin-top: auto;
+  align-self: stretch;
+  min-height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  color: #FFFFFF;
+  background-color: #4285F4;
+}
+
+.form__submit-button_type_profile {
+  min-height: 30px;
+  align-self: center;
+  padding: 0 15px;
+  background-color: transparent;
+}
+
+.form__support {
+  padding: 0;
+  margin: 0;
+  margin-top: 14px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  color: #8B8B8B;
+}
+
+.form__link {
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  color: #4285F4;
+}
+
+.form_type_profile .form__link {
+  margin-top: 10px;
+  color: #EE3465;
+}
+
+@media screen and (min-width: 768px) {
+  .profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 74px);
+  }
+
+  .profile__wrapper {
+    width: 100%;
+    align-items: flex-start;
+    padding: 0;
+    padding-bottom: 35px;
+    margin: 0;
+    min-height: 486px;
+  }
+
+  .form__title {
+    align-self: start;
+    margin-top: 37px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: left;
+  }
+
+  .form_type_profile .form__title {
+    margin-top: 0;
+    align-self: center;
+  }
+
+  .form__labels-block {
+    margin-top: 40px;
+  }
+
+  .form_type_profile .form__labels-block {
+    margin-top: 85px;
+  }
+
+  .form__submit-button {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  .form_type_profile .form__submit-button {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .form__support {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  .form__link {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  .form_type_profile .form__link {
+    font-size: 13px;
+    line-height: 16px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .form_type_profile .form__labels-block {
+    margin-top: 110px;
+  }
+
+  .profile__wrapper {
+    padding-bottom: 0;
+  }
+}
