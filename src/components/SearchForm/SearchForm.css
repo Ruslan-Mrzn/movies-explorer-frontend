@@ -43,9 +43,6 @@
 .search__input[type="text"] {
   color: white;
 }
-.search__input:focus {
-  outline: none;
-}
 
 .search__button {
   position: absolute;
