@@ -8,17 +8,17 @@ import Footer from "../Footer/Footer";
 
 import './Movies.css';
 
-function Movies({onClickMenu, isMenuOpened, authorized, data}) {
+function Movies({isLoading, onClickMenu, isMenuOpened, authorized, data, onSearch}) {
   return (
-    <>
+    <div className="movies-page">
       <Header bgColor={false} isMenuOpened={isMenuOpened}>
         <Logo />
         <Navigation authorized={authorized} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened}/>
       </Header>
-      <SearchForm />
-      <MoviesCardList data={data} />
+      <SearchForm onSearch={onSearch} />
+      <MoviesCardList isLoading={isLoading} data={data} />
       <Footer />
-    </>
+    </div>
   );
 }
 
