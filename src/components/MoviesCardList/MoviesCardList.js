@@ -14,11 +14,11 @@ function MoviesCardList({isLoading, data}) {
   const [addQuantity, setAddQuantity] = React.useState(Number);
 
   const handleResizeWidth = React.useCallback (() => {
-    setScreenWidth(document.documentElement.clientWidth);
+    setTimeout ( () => {
+      setScreenWidth(document.documentElement.clientWidth)
+    } , 5000)
 
   }, [setScreenWidth]);
-
-  // const
 
   React.useEffect(() => {
 
@@ -53,7 +53,7 @@ function MoviesCardList({isLoading, data}) {
       {!isLoading &&
         <ul className="movies__list">
           {
-            screenWidth &&
+            screenWidth && Array.isArray(data) &&
             data.slice(0, sliceQuantity).map((card, i) => (
               <MoviesCard key={card.id} card={card}
                 // onCardSave={onCardSave} onCardDelete={onCardDelete}
@@ -63,7 +63,7 @@ function MoviesCardList({isLoading, data}) {
         </ul>
       }
 
-      {(data.length - sliceQuantity > 0) && <button type="button" className="button movies__show-more" onClick={handleShowMoreCards}>Ещё</button>}
+      {Array.isArray(data) && (data.length - sliceQuantity > 0) && <button type="button" className="button movies__show-more" onClick={handleShowMoreCards}>Ещё</button>}
     </section>
   );
 }
