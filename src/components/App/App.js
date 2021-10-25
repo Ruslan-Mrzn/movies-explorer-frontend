@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import './App.css';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -13,66 +13,119 @@ import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import moviesApi from "../../utils/MoviesApi";
 import { getFilteredMovies } from "../../utils/utils";
 import { errorTexts } from "../../utils/error-texts";
+import { filterByDuration } from "../../utils/utils";
+
 
 import { Route, Switch} from 'react-router-dom';
 
 
 function App() {
 
-  const [isLoading, setIsloading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [isInfoPopupOpened, setIsInfoPopupOpened] = React.useState(false);
   const [message, setMessage] = React.useState('');
-  const [movies, setMovies] = React.useState([]);
-  const [filteredMovies, setFilteredMovies] = React.useState(null);
+  const [localMovies, setLocalMovies] = React.useState(JSON.parse(localStorage.getItem('localStorageMovies')));
+  const [filteredMovies, setFilteredMovies] = React.useState(JSON.parse(localStorage.getItem('localStorageFilteredMovies')));
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [isMenuOpened, setIsMenuOpened] = React.useState(false);
+  const [isFirstSearch, setIsFirstSearch] = React.useState(false);
+  const [isSearched, setIsSearched] = React.useState(false);
+  const [isServerError, setIsServerError] = React.useState(false);
+  const [isShortFilm, setIsShortFilm] = React.useState(false);
 
 
   const onClickMenu = (isMenuOpened) => {
     setIsMenuOpened(!isMenuOpened);
   }
 
+  const toggleDuration = () => {
+    setIsShortFilm(!isShortFilm)
+  }
+
+
+  // поиск по фильмам
 
 
   const getMovies = (searchQuery) => {
+    // чтобы не делать лишних действий, если в форме поиска пустая строка
     if(!searchQuery) {
-      setMessage(errorTexts.emptyQuery);
-      setIsInfoPopupOpened(true);
       return;
     }
-    setIsloading(true)
-    moviesApi.getInitialMovies()
+    // чтобы ошибка не висела постоянно
+    setIsServerError(false);
+    // для отрисовки результата по нажатию на поиск
+    setIsSearched(!isSearched);
+    // по условию задачи должен быть лоадер
+    setIsLoading(true)
+    // при первом поиске или если локальное хранилище было очищено
+    if(!localStorage.getItem('localStorageMovies')) {
+      console.log('не вижу сохранённых фильмов')
+      moviesApi.getInitialMovies()
       .then((initialsMovies) => {
-        setMovies(initialsMovies);
-        setFilteredMovies(getFilteredMovies(initialsMovies, searchQuery));
+        console.log('задаю фильтр после запроса на сервер')
+        localStorage.setItem('localStorageMovies', JSON.stringify(initialsMovies));
+        localStorage.setItem('localStorageFilteredMovies', JSON.stringify(getFilteredMovies(initialsMovies, searchQuery)));
+        // setFilteredMovies();
+        setIsFirstSearch(true);
+
       })
       .catch((err) => {
         console.error(err);
-        setMessage(errorTexts.default);
-        setIsInfoPopupOpened(true);
+        setIsServerError(true);
+        // setMessage(errorTexts.default);
+        // setIsInfoPopupOpened(true);
       })
-      .finally(() => setIsloading(false))
+      .finally(() => setIsLoading(false));
+      return;
+      // если уже поиск был и данные лежат в локальном хранилище
+    } else if(localMovies) {
 
+      console.log('вижу сохраненные фильмы');
+      console.log('обновляю фильтр из локалки');
+      localStorage.setItem('localStorageFilteredMovies', JSON.stringify(getFilteredMovies(localMovies, searchQuery)));
+      // setFilteredMovies();
+      setIsLoading(false);
+    }
   }
 
   const onCloseInfoPopup = () => {
     setIsInfoPopupOpened(false);
   }
 
-  // React.useEffect(() => {
-  //   if (Array.isArray(filteredMovies) && filteredMovies.length !== 0) {
-  //     localStorage.setItem('localStorageMovies', filteredMovies);
-  //   }
-  // }, [filteredMovies])
 
+  // React.useEffect(() => {
+  //   localStorage.removeItem('localStorageMovies')
+  //   localStorage.removeItem('localStorageFilteredMovies')
+  //   console.log(localStorage.getItem('localStorageMovies'))
+  //   console.log('type', typeof JSON.parse(localStorage.getItem('localStorageMovies')))
+  //   console.log(Array.isArray(JSON.parse(localStorage.getItem('localStorageMovies'))))
+  // }, [])
+
+  // после удачного первого поиска, дальнейший поиск ведется
+  // по фильмам из локального хранилища, без обращения к серверу за данными
   React.useEffect(() => {
-    console.log(movies);
-    console.log(filteredMovies)
-    if (Array.isArray(filteredMovies) && filteredMovies.length === 0) {
-      setMessage(errorTexts.notFound);
-      setIsInfoPopupOpened(true);
+    const initialMovies = JSON.parse(localStorage.getItem('localStorageMovies'))
+    if(!localMovies && initialMovies) {
+      console.log('задаю сохранённые фильмы')
+      setLocalMovies(initialMovies)
     }
-  }, [movies, filteredMovies])
+
+  }, [localMovies, isFirstSearch])
+
+  // при монтировании компонента и при каждом поиске,
+  // результат поиска сохраняется и обновляется
+  React.useEffect(() => {
+    const initialFilteredMovies = JSON.parse(localStorage.getItem('localStorageFilteredMovies'))
+    console.log('обновляю отфильтрованные фильмы')
+    // если ищем короткометражки (сбрасывается при обновлении страницы)
+    if(isShortFilm) {
+      setFilteredMovies(filterByDuration(initialFilteredMovies))
+      return;
+    }
+    // обычная выдача результата
+    setFilteredMovies(initialFilteredMovies)
+
+  }, [isShortFilm, isSearched])
 
   return (
     <>
@@ -84,6 +137,8 @@ function App() {
 
         <Route path="/movies">
           <Movies
+            toggleDuration={toggleDuration}
+            isServerError={isServerError}
             isLoading={isLoading}
             data={filteredMovies}
             authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} onSearch={getMovies}/>

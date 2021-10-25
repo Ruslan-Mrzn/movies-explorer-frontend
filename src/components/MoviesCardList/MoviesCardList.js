@@ -3,16 +3,20 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
 
 import './MoviesCardList.css';
+import { errorTexts } from "../../utils/error-texts";
 
 
 
-function MoviesCardList({isLoading, data}) {
+function MoviesCardList({isLoading, data, isServerError}) {
 
+  // проверим ширину контентной области
   const [screenWidth, setScreenWidth] = React.useState(document.documentElement.clientWidth);
 
+  // первоначальное количество карточек
   const [sliceQuantity, setSliceQuantity] = React.useState(Number);
+  // количество добавляемых карточек при нажатии на кнопку "Ёще"
   const [addQuantity, setAddQuantity] = React.useState(Number);
-
+  // добавим задержку срабатывания функции
   const handleResizeWidth = React.useCallback (() => {
     setTimeout ( () => {
       setScreenWidth(document.documentElement.clientWidth)
@@ -26,6 +30,8 @@ function MoviesCardList({isLoading, data}) {
 
   }, [handleResizeWidth]);
 
+  // зададим количество отображаемых и добавляемых карточек
+  // в зависимости от брейкпоинтов
   React.useEffect(() => {
     if (screenWidth < 640) {
       setSliceQuantity(5);
@@ -42,6 +48,7 @@ function MoviesCardList({isLoading, data}) {
     }
   }, [screenWidth]);
 
+  // при нажатии на кнопку "Ёще"
   const handleShowMoreCards = () => {
     setSliceQuantity(sliceQuantity+addQuantity);
   }
@@ -50,6 +57,15 @@ function MoviesCardList({isLoading, data}) {
   return (
     <section className="movies">
       {isLoading && <Preloader />}
+
+      {Array.isArray(data) && data.length === 0 &&
+        <p className="movies__error">{errorTexts.notFound}</p>
+      }
+
+      {isServerError &&
+        <p className="movies__error">{errorTexts.default}</p>
+      }
+
       {!isLoading &&
         <ul className="movies__list">
           {

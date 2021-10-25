@@ -4,6 +4,11 @@
   min-height: 235px;
 }
 
+.movie-card__link {
+  text-decoration: none;
+  color: currentColor;
+}
+
 .movie-card__card {
   border-radius: 10px;
   overflow: hidden;
@@ -42,6 +47,7 @@
 .movie-card__title {
   margin: 0 22px 0 0;
   padding: 0;
+  max-width: calc(100% - 42px);
   font-weight: 500;
   font-size: 13px;
   line-height: 16px;
