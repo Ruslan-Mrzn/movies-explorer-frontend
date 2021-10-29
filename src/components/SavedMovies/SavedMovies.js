@@ -9,6 +9,11 @@ import Footer from "../Footer/Footer";
 import './SavedMovies.css';
 
 function SavedMovies({onClickMenu, isMenuOpened, authorized, data}) {
+
+  React.useEffect(() => {
+    // запрос к апи + функция setSavedMovies
+  }, [])
+
   return (
     <>
       <Header bgColor={false} isMenuOpened={isMenuOpened}>

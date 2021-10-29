@@ -1,13 +1,19 @@
 import React from "react";
+import { useLocation } from 'react-router-dom';
+
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
 
 import './MoviesCardList.css';
 import { errorTexts } from "../../utils/error-texts";
+import { checkIsMovieSaved } from "../../utils/utils";
 
 
 
-function MoviesCardList({isLoading, data, isServerError}) {
+
+function MoviesCardList({isLoading, data, isServerError, savedMovies}) {
+
+  const location = useLocation();
 
   // проверим ширину контентной области
   const [screenWidth, setScreenWidth] = React.useState(document.documentElement.clientWidth);
@@ -69,12 +75,16 @@ function MoviesCardList({isLoading, data, isServerError}) {
       {!isLoading &&
         <ul className="movies__list">
           {
-            screenWidth && Array.isArray(data) &&
+            location.pathname === '/movies' && screenWidth && Array.isArray(data) &&
             data.slice(0, sliceQuantity).map((card, i) => (
-              <MoviesCard key={card.id} card={card}
+              <MoviesCard key={card.id} card={card} isSaved={checkIsMovieSaved(card, savedMovies)}
                 // onCardSave={onCardSave} onCardDelete={onCardDelete}
               />
             ))
+          }
+          {
+            location.pathname === '/saved-movies' && screenWidth &&
+            savedMovies
           }
         </ul>
       }

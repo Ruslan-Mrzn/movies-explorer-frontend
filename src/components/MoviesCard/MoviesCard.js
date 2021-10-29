@@ -5,15 +5,10 @@ import './MoviesCard.css';
 
 import { transformFilmDuration } from "../../utils/utils";
 
-function MoviesCard({card}) {
+function MoviesCard({card, isSaved}) {
 
   const location = useLocation();
 
-  const [isCardSaved, setIsCardSaved] = React.useState(card.saved)
-
-  const handleOnClick = () => {
-    setIsCardSaved(!card.saved)
-  }
 
   return (
     <li className="movie-card">
@@ -26,8 +21,8 @@ function MoviesCard({card}) {
             <h2 className="movie-card__title">{card.nameRU}</h2>
             {
               location.pathname === '/movies' &&
-              <button type="button" className={`button movie-card__save-btn ${isCardSaved ? 'movie-card__save-btn_state_active' : ''}`} aria-label={`${isCardSaved ? 'удалить фильм из сохранных' : 'сохранить фильм'}`}
-              onClick={handleOnClick}
+              <button type="button" className={`button movie-card__save-btn ${isSaved ? 'movie-card__save-btn_state_active' : ''}`} aria-label={`${isSaved ? 'удалить фильм из сохранных' : 'сохранить фильм'}`}
+
               >
               </button>
             }

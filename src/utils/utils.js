@@ -16,3 +16,15 @@ export const filterByDuration = (movies) => {
     return movie.duration <= 40
   })
 }
+
+export const checkIsMovieSaved = (card, savedMovies) => {
+  savedMovies.some(savedMovie => savedMovie.movieId === card.movieId)
+}
+
+// export const markSavedMovies = (movies, savedMovies, setMovieSaved) => {
+//   movies.map((movie, i) => {
+//     if (savedMovies.some(savedMovie => savedMovie.movieId === movie.movieId)) {
+
+//     }
+//   })
+// }

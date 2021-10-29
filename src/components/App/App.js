@@ -38,14 +38,14 @@ function App() {
     setIsMenuOpened(!isMenuOpened);
   }
 
+  // переключение чек-бокса короткометражки
   const toggleDuration = () => {
     setIsShortFilm(!isShortFilm)
   }
 
 
+
   // поиск по фильмам
-
-
   const getMovies = (searchQuery) => {
     // чтобы не делать лишних действий, если в форме поиска пустая строка
     if(!searchQuery) {
@@ -54,7 +54,7 @@ function App() {
     // чтобы ошибка не висела постоянно
     setIsServerError(false);
     // для отрисовки результата по нажатию на поиск
-    setIsSearched(!isSearched);
+
     // по условию задачи должен быть лоадер
     setIsLoading(true)
     // при первом поиске или если локальное хранилище было очищено
@@ -67,7 +67,7 @@ function App() {
         localStorage.setItem('localStorageFilteredMovies', JSON.stringify(getFilteredMovies(initialsMovies, searchQuery)));
         // setFilteredMovies();
         setIsFirstSearch(true);
-
+        setIsSearched(!isSearched);
       })
       .catch((err) => {
         console.error(err);
@@ -79,7 +79,7 @@ function App() {
       return;
       // если уже поиск был и данные лежат в локальном хранилище
     } else if(localMovies) {
-
+      setIsSearched(!isSearched);
       console.log('вижу сохраненные фильмы');
       console.log('обновляю фильтр из локалки');
       localStorage.setItem('localStorageFilteredMovies', JSON.stringify(getFilteredMovies(localMovies, searchQuery)));
@@ -88,9 +88,26 @@ function App() {
     }
   }
 
-  const onCloseInfoPopup = () => {
-    setIsInfoPopupOpened(false);
-  }
+  /* Работа с сохраненными фильмами */
+
+  // кнопка сохранить фильм отправляет запрос createMovie на сервер и добавляет заливку
+  // эта кнопка функционирует на странице фильмов
+  // попробуем покрасить кнопки у локальных фильмов, чтобы выявить
+  // сохранен фильм или нет
+  // параметр попробуем задать на MovieCardList
+
+  // нажатие на кнопку уже сохраненного фильма отправляет запрос deleteMovie и убирает заливку
+  // эта кнопка функционирует на странице фильмов
+
+  // сохраненные фильмы получаем отправкой запроса getMovies при монтировании компоенента savedMovies
+
+
+  /* --------------------------------------- */
+
+
+  // const onCloseInfoPopup = () => {
+  //   setIsInfoPopupOpened(false);
+  // }
 
 
   // React.useEffect(() => {
@@ -127,9 +144,11 @@ function App() {
 
   }, [isShortFilm, isSearched])
 
+  // при
+
   return (
     <>
-      <InfoTooltip onClose={onCloseInfoPopup} isOpen={isInfoPopupOpened} message={message} />
+      {/* <InfoTooltip onClose={onCloseInfoPopup} isOpen={isInfoPopupOpened} message={message} /> */}
       <Switch>
         <Route path="/" exact>
           <Main authorized={false} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
@@ -141,6 +160,7 @@ function App() {
             isServerError={isServerError}
             isLoading={isLoading}
             data={filteredMovies}
+            savedMovies={savedMovies}
             authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} onSearch={getMovies}/>
         </Route>
 
