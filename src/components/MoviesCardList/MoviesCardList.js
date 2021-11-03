@@ -11,8 +11,8 @@ import { checkIsMovieSaved } from "../../utils/utils";
 
 
 
-function MoviesCardList({isLoading, data, isServerError, savedMovies}) {
-
+function MoviesCardList({toggleSaveMovie, deleteMovie, isLoading, data, isServerError, savedMovies}) {
+  console.log(savedMovies);
   const location = useLocation();
 
   // проверим ширину контентной области
@@ -29,6 +29,13 @@ function MoviesCardList({isLoading, data, isServerError, savedMovies}) {
     } , 5000)
 
   }, [setScreenWidth]);
+
+
+
+  // при нажатии на кнопку "Ёще"
+  const handleShowMoreCards = () => {
+    setSliceQuantity(sliceQuantity+addQuantity);
+  }
 
   React.useEffect(() => {
 
@@ -54,10 +61,9 @@ function MoviesCardList({isLoading, data, isServerError, savedMovies}) {
     }
   }, [screenWidth]);
 
-  // при нажатии на кнопку "Ёще"
-  const handleShowMoreCards = () => {
-    setSliceQuantity(sliceQuantity+addQuantity);
-  }
+  React.useEffect(() => {
+
+  })
 
 
   return (
@@ -77,14 +83,18 @@ function MoviesCardList({isLoading, data, isServerError, savedMovies}) {
           {
             location.pathname === '/movies' && screenWidth && Array.isArray(data) &&
             data.slice(0, sliceQuantity).map((card, i) => (
-              <MoviesCard key={card.id} card={card} isSaved={checkIsMovieSaved(card, savedMovies)}
-                // onCardSave={onCardSave} onCardDelete={onCardDelete}
+              <MoviesCard key={card.id} card={card} isSaved={checkIsMovieSaved(card.id, savedMovies)}
+              toggleSaveMovie={toggleSaveMovie}
               />
             ))
           }
           {
             location.pathname === '/saved-movies' && screenWidth &&
-            savedMovies
+            savedMovies.map((card, i) => (
+              <MoviesCard key={card.MovieId} card={card}
+              deleteMovie={deleteMovie}
+              />
+            ))
           }
         </ul>
       }

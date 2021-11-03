@@ -17,14 +17,11 @@ export const filterByDuration = (movies) => {
   })
 }
 
-export const checkIsMovieSaved = (card, savedMovies) => {
-  savedMovies.some(savedMovie => savedMovie.movieId === card.movieId)
+export const checkIsMovieSaved = (cardId, savedMovies) => {
+  console.log(savedMovies.some(savedMovie => JSON.stringify(savedMovie.movieId) === JSON.stringify(cardId)));
+  return savedMovies.some(savedMovie => JSON.stringify(savedMovie.movieId) === JSON.stringify(cardId))
 }
 
-// export const markSavedMovies = (movies, savedMovies, setMovieSaved) => {
-//   movies.map((movie, i) => {
-//     if (savedMovies.some(savedMovie => savedMovie.movieId === movie.movieId)) {
+export const toggleSaveMovie = (isSaved, movie) => {
 
-//     }
-//   })
-// }
+}

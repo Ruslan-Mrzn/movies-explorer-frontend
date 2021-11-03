@@ -13,7 +13,7 @@ class MainApi {
   }
 
   // создание нового пользователя
-  register = (name, email, password) => {
+  createUser = (name, email, password) => {
     return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',
       credentials: 'include', // теперь куки посылаются вместе с запросом
@@ -41,9 +41,84 @@ class MainApi {
     .then((user) => user)
   }
 
+  // разлогиниться
+  logout = () => {
+    return fetch(`${this._baseUrl}/signout`, {
+      method: 'POST',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(this._checkResponse)
+  }
 
+  // получить данные текущего пользователя
+  getCurrentUser = () => {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'GET',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(this._checkResponse)
+    .then((user) => user)
+  }
 
+  // обновить данные текущего пользователя
+  updateProfile = (name, email) => {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'PATCH',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({name, email})
+    })
+    .then(this._checkResponse)
+    .then((user) => user)
+  }
 
+  // получить сохранённые фильмы
+  getSavedMovies = () =>  {
+    return fetch(`${this._baseUrl}/movies`, {
+      method: 'GET',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(this._checkResponse)
+    .then((savedMovies) => savedMovies)
+  }
+
+  // сохранить фильм
+  saveMovie = (movie) => {
+    return fetch(`${this._baseUrl}/movies`, {
+      method: 'POST',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(movie)
+    })
+    .then(this._checkResponse)
+    .then((savedMovie) => savedMovie)
+  }
+
+  // удалить фильм
+  deleteMovie = (movieId) => {
+    return fetch(`${this._baseUrl}/movies/${movieId}`, {
+      method: 'DELETE',
+      credentials: 'include', // теперь куки посылаются вместе с запросом
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(this._checkResponse)
+    .then((movie) => movie)
+  }
 }
 
 

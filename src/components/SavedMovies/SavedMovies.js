@@ -8,7 +8,7 @@ import Footer from "../Footer/Footer";
 
 import './SavedMovies.css';
 
-function SavedMovies({onClickMenu, isMenuOpened, authorized, data}) {
+function SavedMovies({deleteMovie, onClickMenu, isMenuOpened, authorized, savedMovies}) {
 
   React.useEffect(() => {
     // запрос к апи + функция setSavedMovies
@@ -21,7 +21,7 @@ function SavedMovies({onClickMenu, isMenuOpened, authorized, data}) {
         <Navigation authorized={authorized} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened}/>
       </Header>
       <SearchForm />
-      <MoviesCardList data={data} />
+      <MoviesCardList deleteMovie={deleteMovie} savedMovies={savedMovies} />
       <Footer />
     </>
   );

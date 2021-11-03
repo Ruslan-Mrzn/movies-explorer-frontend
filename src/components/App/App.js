@@ -8,8 +8,8 @@ import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import NotFound from "../NotFound/NotFound";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
-//import moviesData from "../../utils/movies";
-
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import mainApi from "../../utils/MainApi";
 import moviesApi from "../../utils/MoviesApi";
 import { getFilteredMovies } from "../../utils/utils";
 import { errorTexts } from "../../utils/error-texts";
@@ -21,6 +21,8 @@ import { Route, Switch} from 'react-router-dom';
 
 function App() {
 
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isInfoPopupOpened, setIsInfoPopupOpened] = React.useState(false);
   const [message, setMessage] = React.useState('');
@@ -42,8 +44,6 @@ function App() {
   const toggleDuration = () => {
     setIsShortFilm(!isShortFilm)
   }
-
-
 
   // поиск по фильмам
   const getMovies = (searchQuery) => {
@@ -92,10 +92,44 @@ function App() {
 
   // кнопка сохранить фильм отправляет запрос createMovie на сервер и добавляет заливку
   // эта кнопка функционирует на странице фильмов
-  // попробуем покрасить кнопки у локальных фильмов, чтобы выявить
-  // сохранен фильм или нет
   // параметр попробуем задать на MovieCardList
+  const toggleSaveMovie = (isSaved, movie) => {
+    !isSaved ?
+    mainApi.saveMovie({
+      movieId: movie.id,
+      country: movie.country,
+      description: movie.description,
+      director: movie.director,
+      duration: movie.duration,
+      image: `https://api.nomoreparties.co${movie.image.url}`,
+      thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+      nameEN: movie.nameEN,
+      nameRU: movie.nameRU,
+      trailer: movie.trailerLink,
+      year: movie.year,
+    })
+      .then(() =>
+        mainApi.getSavedMovies()
+          .then(movies => setSavedMovies(movies))
+          .catch(err => console.error(err))
+      )
+      .catch(err => console.error(err))
+    :
+    mainApi.deleteMovie(movie.id)
+      .then(() =>
+        mainApi.getSavedMovies()
+          .then(movies => setSavedMovies(movies))
+          .catch(err => console.error(err))
+      )
+    .catch(err => console.error(err))
+  }
 
+  const deleteMovie = (movie) => {
+    mainApi.deleteMovie(movie.movieId)
+    .then(() => setSavedMovies(savedMovies.filter(savedMovie => savedMovie.movieId !== movie.movieId)))
+    .catch(err => console.error(err))
+
+  }
   // нажатие на кнопку уже сохраненного фильма отправляет запрос deleteMovie и убирает заливку
   // эта кнопка функционирует на странице фильмов
 
@@ -144,47 +178,74 @@ function App() {
 
   }, [isShortFilm, isSearched])
 
-  // при
+  React.useEffect(() => {
+  //  Promise.all([mainApi.getCurrentUser(),
+    mainApi.getSavedMovies()
+  //])
+    .then(
+      //([user,
+
+      //])
+      (savedMovies) => {
+      // setCurrentUser(Object.assign(currentUser, user));
+      // console.log(currentUser);
+      setSavedMovies(savedMovies);
+      console.log(savedMovies)
+    })
+    .catch((err) => console.error(err));
+
+  }, [])
 
   return (
     <>
-      {/* <InfoTooltip onClose={onCloseInfoPopup} isOpen={isInfoPopupOpened} message={message} /> */}
-      <Switch>
-        <Route path="/" exact>
-          <Main authorized={false} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-        </Route>
+      <CurrentUserContext.Provider value={currentUser}>
 
-        <Route path="/movies">
-          <Movies
-            toggleDuration={toggleDuration}
-            isServerError={isServerError}
-            isLoading={isLoading}
-            data={filteredMovies}
-            savedMovies={savedMovies}
-            authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} onSearch={getMovies}/>
-        </Route>
+        {/* <InfoTooltip onClose={onCloseInfoPopup} isOpen={isInfoPopupOpened} message={message} /> */}
+        <Switch>
+          <Route path="/" exact>
+            <Main authorized={false} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+          </Route>
 
-        <Route path="/saved-movies">
-          <SavedMovies data={savedMovies} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-        </Route>
+          <Route path="/movies">
+            <Movies
+              toggleSaveMovie={toggleSaveMovie}
+              toggleDuration={toggleDuration}
+              isServerError={isServerError}
+              isLoading={isLoading}
+              data={filteredMovies}
+              savedMovies={savedMovies}
+              authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} onSearch={getMovies}
+            />
+          </Route>
 
-        <Route path="/profile">
-          <Profile authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-        </Route>
+          <Route path="/saved-movies">
+            <SavedMovies
+              deleteMovie={deleteMovie}
+              savedMovies={savedMovies}
+              authorized={true}
+              onClickMenu={onClickMenu}
+              isMenuOpened={isMenuOpened}
+            />
+          </Route>
 
-        <Route path="/signup">
-          <Register />
-        </Route>
+          <Route path="/profile">
+            <Profile authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+          </Route>
 
-        <Route path="/signin">
-          <Login />
-        </Route>
+          <Route path="/signup">
+            <Register />
+          </Route>
 
-        <Route path="/404">
-          <NotFound />
-        </Route>
+          <Route path="/signin">
+            <Login />
+          </Route>
 
-      </Switch>
+          <Route path="/404">
+            <NotFound />
+          </Route>
+
+        </Switch>
+      </CurrentUserContext.Provider>
     </>
   );
 }
