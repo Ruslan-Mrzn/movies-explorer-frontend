@@ -36,6 +36,11 @@ body {
   cursor: pointer;
   opacity: .8;
 }
+
+.button:disabled {
+  cursor: default;
+  opacity: .5;
+}
 /*-------------------------*/
 
 

@@ -5,15 +5,20 @@ function InfoTooltip({isOpen, onClose, message}) {
 
   const handleEscClose = React.useCallback( (evt) => {
     if (evt.key ==='Escape') {
-        onClose();
+        onClose(false);
     }
   }, [onClose])
 
   const handleOverlayClose = React.useCallback( (evt) => {
     if (evt.target.classList.contains('popup_opened')) {
-        onClose();
+        onClose(false);
     }
   }, [onClose])
+
+  const handleClose = (evt) => {
+    evt.preventDefault();
+    onClose(false);
+  }
 
   React.useEffect(() => {
     if (isOpen) {
@@ -34,7 +39,7 @@ function InfoTooltip({isOpen, onClose, message}) {
         <p className="popup__info-text">
           {message}
         </p>
-        <button type="button" onClick={onClose} className="popup__close-button" value="закрыть форму" title="закрыть"></button>
+        <button type="button" onClick={handleClose} className="popup__close-button" value="закрыть форму" title="закрыть"></button>
       </div>
     </article>
   );

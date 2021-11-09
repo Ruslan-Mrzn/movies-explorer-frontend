@@ -15,7 +15,7 @@ import './Main.css';
 function Main({onClickMenu, isMenuOpened, authorized}) {
   return (
     <>
-      <Header bgColor={true} isMenuOpened={isMenuOpened}>
+      <Header bgColor={authorized} isMenuOpened={isMenuOpened}>
         <Logo />
         <Navigation authorized={authorized} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened}/>
       </Header>

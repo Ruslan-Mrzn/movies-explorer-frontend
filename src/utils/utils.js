@@ -22,6 +22,6 @@ export const checkIsMovieSaved = (cardId, savedMovies) => {
   return savedMovies.some(savedMovie => JSON.stringify(savedMovie.movieId) === JSON.stringify(cardId))
 }
 
-export const toggleSaveMovie = (isSaved, movie) => {
-
+export const checkIsEmail = (email) => {
+  return email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
 }

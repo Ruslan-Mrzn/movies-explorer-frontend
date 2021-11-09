@@ -17,12 +17,14 @@ import { filterByDuration } from "../../utils/utils";
 
 
 import { Route, Switch} from 'react-router-dom';
-
+import { useHistory } from 'react-router';
 
 function App() {
+  const history = useHistory();
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [isWaitingApiRequest, setIsWaitingApiRequest] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isInfoPopupOpened, setIsInfoPopupOpened] = React.useState(false);
   const [message, setMessage] = React.useState('');
@@ -35,6 +37,75 @@ function App() {
   const [isServerError, setIsServerError] = React.useState(false);
   const [isShortFilm, setIsShortFilm] = React.useState(false);
 
+  const register = (name, email, password) => {
+    setIsWaitingApiRequest(true);
+    mainApi.createUser(name, email, password)
+      .then((user) => {
+        setCurrentUser(user);
+        setLoggedIn(true);
+        history.push({
+          pathname: '/movies'
+        });
+      })
+      .catch((err) => {
+        console.error(`Ошибка ${err.status}`);
+        err.json()
+          .then((json) => {
+            setMessage(json.message);
+            setIsInfoPopupOpened(true);
+          })
+      })
+      .finally(() => {
+        setIsWaitingApiRequest(false);
+      })
+  }
+
+  const login = (email, password) => {
+    setIsWaitingApiRequest(true);
+    mainApi.login(email, password)
+      .then((user) => {
+        setCurrentUser(user);
+        setLoggedIn(true);
+        history.push({
+          pathname: '/movies'
+        });
+      })
+      .catch((err) => {
+        console.error(`Ошибка ${err.status}`);
+        err.json()
+          .then((json) => {
+            setMessage(json.message);
+            setIsInfoPopupOpened(true);
+          })
+      })
+      .finally(() => {
+        setIsWaitingApiRequest(false);
+      })
+  }
+
+  const logout = () => {
+    setIsWaitingApiRequest(true)
+    mainApi.logout()
+      .then((res) => {
+        setMessage(res.message);
+        setIsInfoPopupOpened(true);
+        setCurrentUser({});
+        setLoggedIn(false);
+        history.push({
+          pathname: '/'
+        });
+      })
+      .catch((err) => {
+        console.error(`Ошибка ${err.status}`);
+        err.json()
+          .then((json) => {
+            console.log(json)
+          })
+      })
+      .finally(() => {
+        setIsWaitingApiRequest(false)
+      });
+  }
 
   const onClickMenu = (isMenuOpened) => {
     setIsMenuOpened(!isMenuOpened);
@@ -70,7 +141,7 @@ function App() {
         setIsSearched(!isSearched);
       })
       .catch((err) => {
-        console.error(err);
+        console.error(`Ошибка ${err.status}`);
         setIsServerError(true);
         // setMessage(errorTexts.default);
         // setIsInfoPopupOpened(true);
@@ -121,13 +192,17 @@ function App() {
           .then(movies => setSavedMovies(movies))
           .catch(err => console.error(err))
       )
-    .catch(err => console.error(err))
+      .catch((err) => {
+        console.error(`Ошибка ${err.status}`);
+      })
   }
 
   const deleteMovie = (movie) => {
     mainApi.deleteMovie(movie.movieId)
     .then(() => setSavedMovies(savedMovies.filter(savedMovie => savedMovie.movieId !== movie.movieId)))
-    .catch(err => console.error(err))
+    .catch((err) => {
+      console.error(`Ошибка ${err.status}`);
+    })
 
   }
   // нажатие на кнопку уже сохраненного фильма отправляет запрос deleteMovie и убирает заливку
@@ -179,31 +254,28 @@ function App() {
   }, [isShortFilm, isSearched])
 
   React.useEffect(() => {
-  //  Promise.all([mainApi.getCurrentUser(),
-    mainApi.getSavedMovies()
-  //])
-    .then(
-      //([user,
-
-      //])
-      (savedMovies) => {
-      // setCurrentUser(Object.assign(currentUser, user));
-      // console.log(currentUser);
+   Promise.all(
+    [mainApi.getCurrentUser(),mainApi.getSavedMovies()])
+    .then(([user, savedMovies]) => {
+      setCurrentUser(Object.assign(currentUser, user));
+      console.log(currentUser);
       setSavedMovies(savedMovies);
       console.log(savedMovies)
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.error(`Ошибка ${err.status}`);
+    })
 
-  }, [])
+  }, [currentUser])
 
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
 
-        {/* <InfoTooltip onClose={onCloseInfoPopup} isOpen={isInfoPopupOpened} message={message} /> */}
+        <InfoTooltip onClose={setIsInfoPopupOpened} isOpen={isInfoPopupOpened} message={message} />
         <Switch>
           <Route path="/" exact>
-            <Main authorized={false} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+            <Main authorized={loggedIn} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
           </Route>
 
           <Route path="/movies">
@@ -229,15 +301,15 @@ function App() {
           </Route>
 
           <Route path="/profile">
-            <Profile authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+            <Profile logout={logout} isLoading={isWaitingApiRequest} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
           </Route>
 
           <Route path="/signup">
-            <Register />
+            <Register onSubmit={register} isLoading={isWaitingApiRequest}/>
           </Route>
 
           <Route path="/signin">
-            <Login />
+            <Login onSubmit={login} isLoading={isWaitingApiRequest}/>
           </Route>
 
           <Route path="/404">
