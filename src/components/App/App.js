@@ -166,31 +166,25 @@ function App() {
   // параметр попробуем задать на MovieCardList
   const toggleSaveMovie = (isSaved, movie) => {
     !isSaved ?
-    mainApi.saveMovie({
-      movieId: movie.id,
-      country: movie.country,
-      description: movie.description,
-      director: movie.director,
-      duration: movie.duration,
-      image: `https://api.nomoreparties.co${movie.image.url}`,
-      thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
-      nameEN: movie.nameEN,
-      nameRU: movie.nameRU,
-      trailer: movie.trailerLink,
-      year: movie.year,
-    })
+    mainApi.saveMovie(movie)
       .then(() =>
         mainApi.getSavedMovies()
           .then(movies => setSavedMovies(movies))
           .catch(err => console.error(err))
       )
-      .catch(err => console.error(err))
+      .catch((err) => {
+        console.error(`Ошибка ${err.status}`)
+          err.json()
+            .then(json => console.error(json.message));
+      })
     :
     mainApi.deleteMovie(movie.id)
       .then(() =>
         mainApi.getSavedMovies()
           .then(movies => setSavedMovies(movies))
-          .catch(err => console.error(err))
+          .catch((err) => {
+            console.error(`Ошибка ${err.status}`);
+          })
       )
       .catch((err) => {
         console.error(`Ошибка ${err.status}`);
@@ -203,7 +197,6 @@ function App() {
     .catch((err) => {
       console.error(`Ошибка ${err.status}`);
     })
-
   }
   // нажатие на кнопку уже сохраненного фильма отправляет запрос deleteMovie и убирает заливку
   // эта кнопка функционирует на странице фильмов
@@ -259,6 +252,7 @@ function App() {
     .then(([user, savedMovies]) => {
       setCurrentUser(Object.assign(currentUser, user));
       console.log(currentUser);
+      setLoggedIn(currentUser?.name)
       setSavedMovies(savedMovies);
       console.log(savedMovies)
     })

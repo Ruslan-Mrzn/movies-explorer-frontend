@@ -101,7 +101,21 @@ class MainApi {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(movie)
+      body: JSON.stringify(
+        {
+          movieId: movie.id,
+          country: movie.country || 'Неизвестно',
+          description: movie.description,
+          director: movie.director,
+          duration: movie.duration,
+          image: `https://api.nomoreparties.co${movie.image.url}`,
+          thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+          nameEN: movie.nameEN,
+          nameRU: movie.nameRU,
+          trailer: movie.trailerLink,
+          year: movie.year,
+        }
+      )
     })
     .then(this._checkResponse)
     .then((savedMovie) => savedMovie)
