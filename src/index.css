@@ -29,7 +29,7 @@ body {
 
 /* Buttons hover */
 .button {
-  transition: opacity .4s ease;
+  transition: opacity .4s linear;
 }
 
 .button:hover {

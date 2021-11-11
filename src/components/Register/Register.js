@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Logo from '../Logo/Logo';
 import Preloader from '../Preloader/Preloader';
+import mainApi from '../../utils/MainApi';
 import './Register.css';
 
 import { checkIsEmail, checkIsName } from '../../utils/utils';
 
 function Register({onSubmit, isLoading}) {
+
+  const history = useHistory();
 
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
@@ -23,13 +26,18 @@ function Register({onSubmit, isLoading}) {
     setName(evt.target.value);
     setIsNameValid(evt.target.validity.valid && checkIsName(evt.target.value));
     setNameErrorMessage(evt.target.validationMessage);
+    if(evt.target.validity.valid && !checkIsName(evt.target.value)) {
+      setNameErrorMessage(`Имя должно содержать только латинские или кириллические символы, пробел или дефис`)
+    }
   }
 
   const handleEmailChange = (evt) => {
     setEmail(evt.target.value);
     setIsEmailValid(evt.target.validity.valid && checkIsEmail(evt.target.value));
     setEmailErrorMessage(evt.target.validationMessage);
-
+    if(evt.target.validity.valid && !checkIsEmail(evt.target.value)) {
+      setEmailErrorMessage(`Проверьте корректность указанной электронной почты`)
+    }
   }
 
   const handlePasswordChange = (evt) => {
@@ -46,6 +54,11 @@ function Register({onSubmit, isLoading}) {
   React.useEffect(() => {
     setIsFormValid(name && email && password && isNameValid && isEmailValid && isPasswordValid)
   }, [name, email, password, isNameValid, isEmailValid, isPasswordValid])
+
+  React.useEffect(() => {
+    mainApi.getCurrentUser()
+      .then(() => history.push('/movies'))
+  }, [history])
 
   return (
     <main className="register">

@@ -17,7 +17,7 @@ function Portfolio() {
             Адаптивный сайт
           </a>
 
-          <a href="https://murzin.ruslan.students.nomoredomains.monster/" target="_blank" rel="noreferrer" className="portfolio__link link" >
+          <a href="https://github.com/Ruslan-Mrzn/mesto" target="_blank" rel="noreferrer" className="portfolio__link link" >
             Одностраничное приложение
           </a>
         </nav>

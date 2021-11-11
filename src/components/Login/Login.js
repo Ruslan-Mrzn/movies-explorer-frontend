@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Logo from '../Logo/Logo';
 import Preloader from '../Preloader/Preloader';
+import mainApi from '../../utils/MainApi';
 import './Login.css';
 
 import { checkIsEmail } from '../../utils/utils';
 
 function Login({onSubmit, isLoading}) {
+
+  const history = useHistory();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -37,6 +40,11 @@ function Login({onSubmit, isLoading}) {
   React.useEffect(() => {
     setIsFormValid(email && password && isEmailValid && isPasswordValid)
   }, [email, isEmailValid, isPasswordValid, password])
+
+  React.useEffect(() => {
+    mainApi.getCurrentUser()
+      .then(() => history.push('/movies'))
+  }, [history])
 
   return (
     <main className="login">

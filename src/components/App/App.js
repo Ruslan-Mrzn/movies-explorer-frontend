@@ -87,12 +87,15 @@ function App() {
     mainApi.updateProfile(name, email)
     .then((user) => {
       setCurrentUser(user);
+      setMessage("Данные успешно обновлены");
+      setIsInfoPopupOpened(true);
     })
     .catch((err) => {
       console.error(`Ошибка ${err.status}`);
       err.json()
         .then((json) => {
-          setMessage(json.message);
+          console.log(json)
+          setMessage(`Ошибка! ${json.message}`);
           setIsInfoPopupOpened(true);
         })
     })
@@ -225,9 +228,9 @@ function App() {
   /* --------------------------------------- */
 
 
-  // const onCloseInfoPopup = () => {
-  //   setIsInfoPopupOpened(false);
-  // }
+  const goBack = () => {
+    history.goBack();
+  }
 
 
   // React.useEffect(() => {
@@ -292,7 +295,7 @@ function App() {
         setLoggedIn(false)
 
       })
-  }, [loggedIn])
+  }, [])
 
   return (
     <>
@@ -341,9 +344,9 @@ function App() {
             <Login onSubmit={login} isLoading={isWaitingApiRequest}/>
           </Route>
 
-          <Route>
-            <NotFound />
-          </Route>
+          <ProtectedRoute>
+            <NotFound goBack={goBack} />
+          </ProtectedRoute>
 
         </Switch>
       </CurrentUserContext.Provider>

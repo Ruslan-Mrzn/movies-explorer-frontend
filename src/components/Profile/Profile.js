@@ -32,6 +32,9 @@ function Profile({logout, isLoading, onSubmit, onClickMenu, isMenuOpened, author
     setName(evt.target.value);
     setIsNameValid(evt.target.validity.valid && checkIsName(evt.target.value));
     setNameErrorMessage(evt.target.validationMessage);
+    if(evt.target.validity.valid && !checkIsName(evt.target.value)) {
+      setNameErrorMessage("Имя должно содержать только латинские или кириллические символы, пробел или дефис")
+    }
   }
 
   const handleEmailChange = (evt) => {
@@ -39,6 +42,9 @@ function Profile({logout, isLoading, onSubmit, onClickMenu, isMenuOpened, author
     setEmail(evt.target.value);
     setIsEmailValid(evt.target.validity.valid && checkIsEmail(evt.target.value));
     setEmailErrorMessage(evt.target.validationMessage);
+    if(evt.target.validity.valid && !checkIsEmail(evt.target.value)) {
+      setEmailErrorMessage(`Проверьте корректность указанной электронной почты`)
+    }
   }
 
   const handleSubmit = (evt) => {
@@ -90,7 +96,6 @@ function Profile({logout, isLoading, onSubmit, onClickMenu, isMenuOpened, author
                   <span className={`form__error ${isEmailValid ? '' : 'form__error_visible'}`}>{emailErrorMessage}</span>
                 </label>
               </div>
-              <span className={`form__error ${isFormValid ? '' : 'form__error_visible'}`}>Что-то пошло не так...</span>
               <button disabled={!isFormValid ? true : ''} type="submit" className={`button form__submit-button form__submit-button_type_profile`} value="Редактировать">Редактировать</button>
               <button onClick={logout} type="button" className="button form__button">Выйти из аккаунта</button>
             </form>
