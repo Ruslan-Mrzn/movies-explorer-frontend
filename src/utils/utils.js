@@ -25,3 +25,7 @@ export const checkIsMovieSaved = (cardId, savedMovies) => {
 export const checkIsEmail = (email) => {
   return email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
 }
+
+export const checkIsName = (name) => {
+  return name.match(/^[A-Za-zА-ЯЁа-яё -]+$/);
+}

@@ -70,7 +70,11 @@ function MoviesCardList({toggleSaveMovie, deleteMovie, isLoading, data, isServer
     <section className="movies">
       {isLoading && <Preloader />}
 
-      {Array.isArray(data) && data.length === 0 &&
+      {!isLoading && location.pathname === '/movies' && Array.isArray(data) && data.length === 0 &&
+        <p className="movies__error">{errorTexts.notFound}</p>
+      }
+
+      {!isLoading && location.pathname === '/saved-movies' && Array.isArray(savedMovies) && savedMovies.length === 0 &&
         <p className="movies__error">{errorTexts.notFound}</p>
       }
 
@@ -91,7 +95,7 @@ function MoviesCardList({toggleSaveMovie, deleteMovie, isLoading, data, isServer
           {
             location.pathname === '/saved-movies' && screenWidth &&
             savedMovies.map((card, i) => (
-              <MoviesCard key={card.MovieId} card={card}
+              <MoviesCard key={card.movieId} card={card}
               deleteMovie={deleteMovie}
               />
             ))

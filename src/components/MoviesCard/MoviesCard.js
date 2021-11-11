@@ -50,6 +50,7 @@ function MoviesCard({card, isSaved, toggleSaveMovie, deleteMovie}) {
               type="button"
               className={`button movie-card__save-btn ${isSaved ? 'movie-card__save-btn_state_active' : ''}`}
               aria-label={`${isSaved ? 'удалить фильм из сохранных' : 'сохранить фильм'}`}
+              title={`${isSaved ? 'удалить фильм из сохранных' : 'сохранить фильм'}`}
             >
             </button>
           }
@@ -61,6 +62,7 @@ function MoviesCard({card, isSaved, toggleSaveMovie, deleteMovie}) {
               type="button"
               className="button movie-card__unsave-btn"
               aria-label="удалить фильм из сохранных"
+              title="удалить фильм"
             >
 
             </button>

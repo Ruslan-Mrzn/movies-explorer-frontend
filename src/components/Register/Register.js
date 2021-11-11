@@ -4,7 +4,7 @@ import Logo from '../Logo/Logo';
 import Preloader from '../Preloader/Preloader';
 import './Register.css';
 
-import { checkIsEmail } from '../../utils/utils';
+import { checkIsEmail, checkIsName } from '../../utils/utils';
 
 function Register({onSubmit, isLoading}) {
 
@@ -21,7 +21,7 @@ function Register({onSubmit, isLoading}) {
 
   const handleNameChange = (evt) => {
     setName(evt.target.value);
-    setIsNameValid(evt.target.validity.valid);
+    setIsNameValid(evt.target.validity.valid && checkIsName(evt.target.value));
     setNameErrorMessage(evt.target.validationMessage);
   }
 

@@ -12,10 +12,9 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import mainApi from "../../utils/MainApi";
 import moviesApi from "../../utils/MoviesApi";
 import { getFilteredMovies } from "../../utils/utils";
-import { errorTexts } from "../../utils/error-texts";
 import { filterByDuration } from "../../utils/utils";
 
-
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { Route, Switch} from 'react-router-dom';
 import { useHistory } from 'react-router';
 
@@ -83,14 +82,31 @@ function App() {
       })
   }
 
+  const updateProfile = (name, email) => {
+    setIsWaitingApiRequest(true);
+    mainApi.updateProfile(name, email)
+    .then((user) => {
+      setCurrentUser(user);
+    })
+    .catch((err) => {
+      console.error(`Ошибка ${err.status}`);
+      err.json()
+        .then((json) => {
+          setMessage(json.message);
+          setIsInfoPopupOpened(true);
+        })
+    })
+    .finally(() => {
+      setIsWaitingApiRequest(false);
+    })
+  }
+
   const logout = () => {
     setIsWaitingApiRequest(true)
     mainApi.logout()
       .then((res) => {
         setMessage(res.message);
         setIsInfoPopupOpened(true);
-        setCurrentUser({});
-        setLoggedIn(false);
         history.push({
           pathname: '/'
         });
@@ -103,6 +119,8 @@ function App() {
           })
       })
       .finally(() => {
+        setCurrentUser({});
+        setLoggedIn(false);
         setIsWaitingApiRequest(false)
       });
   }
@@ -248,19 +266,33 @@ function App() {
 
   React.useEffect(() => {
    Promise.all(
-    [mainApi.getCurrentUser(),mainApi.getSavedMovies()])
+    [mainApi.getCurrentUser(), mainApi.getSavedMovies()])
     .then(([user, savedMovies]) => {
       setCurrentUser(Object.assign(currentUser, user));
       console.log(currentUser);
-      setLoggedIn(currentUser?.name)
+
       setSavedMovies(savedMovies);
       console.log(savedMovies)
     })
     .catch((err) => {
-      console.error(`Ошибка ${err.status}`);
+      console.error(`Ошибка ${err.status} в промисол`);
+
     })
 
   }, [currentUser])
+
+  React.useEffect(() => {
+
+    mainApi.getCurrentUser()
+      .then(() => {
+        setLoggedIn(true)
+      })
+      .catch(err => {
+        console.error(`Ошибка ${err.status}`)
+        setLoggedIn(false)
+
+      })
+  }, [loggedIn])
 
   return (
     <>
@@ -272,7 +304,7 @@ function App() {
             <Main authorized={loggedIn} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
           </Route>
 
-          <Route path="/movies">
+          <ProtectedRoute path="/movies">
             <Movies
               toggleSaveMovie={toggleSaveMovie}
               toggleDuration={toggleDuration}
@@ -280,11 +312,14 @@ function App() {
               isLoading={isLoading}
               data={filteredMovies}
               savedMovies={savedMovies}
-              authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} onSearch={getMovies}
+              authorized={true}
+              onClickMenu={onClickMenu}
+              isMenuOpened={isMenuOpened}
+              onSearch={getMovies}
             />
-          </Route>
+          </ProtectedRoute>
 
-          <Route path="/saved-movies">
+          <ProtectedRoute path="/saved-movies">
             <SavedMovies
               deleteMovie={deleteMovie}
               savedMovies={savedMovies}
@@ -292,11 +327,11 @@ function App() {
               onClickMenu={onClickMenu}
               isMenuOpened={isMenuOpened}
             />
-          </Route>
+          </ProtectedRoute>
 
-          <Route path="/profile">
-            <Profile logout={logout} isLoading={isWaitingApiRequest} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
-          </Route>
+          <ProtectedRoute path="/profile">
+            <Profile onSubmit={updateProfile} logout={logout} isLoading={isWaitingApiRequest} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+          </ProtectedRoute>
 
           <Route path="/signup">
             <Register onSubmit={register} isLoading={isWaitingApiRequest}/>
@@ -306,7 +341,7 @@ function App() {
             <Login onSubmit={login} isLoading={isWaitingApiRequest}/>
           </Route>
 
-          <Route path="/404">
+          <Route>
             <NotFound />
           </Route>
 

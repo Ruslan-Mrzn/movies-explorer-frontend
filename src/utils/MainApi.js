@@ -16,7 +16,7 @@ class MainApi {
   createUser = (name, email, password) => {
     return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',
-      credentials: 'include', // теперь куки посылаются вместе с запросом
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -31,7 +31,7 @@ class MainApi {
   login = (email, password) => {
     return fetch(`${this._baseUrl}/signin`, {
       method: 'POST',
-      credentials: 'include', // теперь куки посылаются вместе с запросом
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -45,7 +45,7 @@ class MainApi {
   logout = () => {
     return fetch(`${this._baseUrl}/signout`, {
       method: 'POST',
-      credentials: 'include', // теперь куки посылаются вместе с запросом
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       }
@@ -57,7 +57,7 @@ class MainApi {
   getCurrentUser = () => {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
-      credentials: 'include', // теперь куки посылаются вместе с запросом
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       }
@@ -70,7 +70,7 @@ class MainApi {
   updateProfile = (name, email) => {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      credentials: 'include', // теперь куки посылаются вместе с запросом
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -84,7 +84,7 @@ class MainApi {
   getSavedMovies = () =>  {
     return fetch(`${this._baseUrl}/movies`, {
       method: 'GET',
-      credentials: 'include', // теперь куки посылаются вместе с запросом
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       }
@@ -97,7 +97,7 @@ class MainApi {
   saveMovie = (movie) => {
     return fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
-      credentials: 'include', // теперь куки посылаются вместе с запросом
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -110,7 +110,7 @@ class MainApi {
           duration: movie.duration,
           image: `https://api.nomoreparties.co${movie.image.url}`,
           thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
-          nameEN: movie.nameEN,
+          nameEN: movie.nameEN || 'Неизвестно',
           nameRU: movie.nameRU,
           trailer: movie.trailerLink,
           year: movie.year,
@@ -125,7 +125,7 @@ class MainApi {
   deleteMovie = (movieId) => {
     return fetch(`${this._baseUrl}/movies/${movieId}`, {
       method: 'DELETE',
-      credentials: 'include', // теперь куки посылаются вместе с запросом
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       }
@@ -139,7 +139,7 @@ class MainApi {
 // экспортируем только экземпляр класса
 const mainApi = new MainApi({
   baseUrl: 'http://localhost:3000/api',
-  credentials: 'include', // теперь куки посылаются вместе с запросом
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   }

@@ -2,12 +2,13 @@ import React from "react";
 import { useHistory } from "react-router";
 import './NotFound.css';
 
-function NotFound() {
+const NotFound = () => {
   const history = useHistory();
 
   const goBack = () => {
-    history.goBack();
+    history.goBack()
   }
+
   return (
     <>
       <main className="not-found">

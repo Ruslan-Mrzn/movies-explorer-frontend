@@ -6,24 +6,61 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 
+import mainApi from "../../utils/MainApi";
+
+import { getFilteredMovies, filterByDuration } from "../../utils/utils";
+
 import './SavedMovies.css';
 
 function SavedMovies({deleteMovie, onClickMenu, isMenuOpened, authorized, savedMovies}) {
 
+  const [movies, setMovies] = React.useState(savedMovies)
+  const [shortFilms, setShortFilms] = React.useState([]);
+  const [isShortFilms, setIsShortFilms] = React.useState(false);
+  const [filteredMovies, setFilteredMovies] = React.useState(savedMovies);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const getSearchedMovies = (searchQuery) => {
+    if(!searchQuery) {
+      return
+    }
+    setFilteredMovies(getFilteredMovies(movies, searchQuery))
+  }
+
   React.useEffect(() => {
-    // запрос к апи + функция setSavedMovies
+    if(isShortFilms) {
+      setShortFilms(filterByDuration(filteredMovies))
+    }
+
+  }, [filteredMovies, isShortFilms])
+
+  const toggleFilmsDuration = () => {
+    setIsShortFilms(!isShortFilms)
+  }
+
+  React.useEffect(() => {
+    setIsLoading(true);
+    mainApi.getSavedMovies()
+      .then(savedMovies => {
+        setFilteredMovies(savedMovies);
+        setMovies(savedMovies);
+      })
+      .catch((err) => {
+        console.error(`Ошибка ${err.status}`);
+      })
+      .finally(() => setIsLoading(false))
   }, [])
 
   return (
-    <>
+    <div className="movies-page">
       <Header bgColor={false} isMenuOpened={isMenuOpened}>
         <Logo />
         <Navigation authorized={authorized} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened}/>
       </Header>
-      <SearchForm />
-      <MoviesCardList deleteMovie={deleteMovie} savedMovies={savedMovies} />
+      <SearchForm onSearch={getSearchedMovies} toggleDuration={toggleFilmsDuration} isShortFilms={isShortFilms} />
+      <MoviesCardList isLoading={isLoading} deleteMovie={deleteMovie} savedMovies={isShortFilms ? shortFilms : filteredMovies} />
       <Footer />
-    </>
+    </div>
   );
 }
 
