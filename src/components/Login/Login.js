@@ -4,7 +4,6 @@ import Logo from '../Logo/Logo';
 import Preloader from '../Preloader/Preloader';
 import mainApi from '../../utils/MainApi';
 import './Login.css';
-
 import { checkIsEmail } from '../../utils/utils';
 
 function Login({onSubmit, isLoading}) {
@@ -24,6 +23,9 @@ function Login({onSubmit, isLoading}) {
     setIsEmailValid(evt.target.validity.valid && checkIsEmail(evt.target.value));
     setEmailErrorMessage(evt.target.validationMessage);
 
+    if(evt.target.validity.valid && !checkIsEmail(evt.target.value)) {
+      setEmailErrorMessage(`Проверьте корректность указанной электронной почты`)
+    }
   }
 
   const handlePasswordChange = (evt) => {
@@ -59,16 +61,42 @@ function Login({onSubmit, isLoading}) {
             <div className="form__labels-block">
               <label className="form__label">
                 <span className="form__label-text">E-mail</span>
-                <input name="email" className="form__input" onChange={handleEmailChange} value={email || ''} type="email" autoComplete="off" placeholder="Введите почту" required/>
+                <input
+                  name="email"
+                  className="form__input"
+                  onChange={handleEmailChange}
+                  value={email || ''}
+                  type="email"
+                  autoComplete="off"
+                  placeholder="Введите почту"
+                  required
+                />
                 <span className={`form__error form__error_${isEmailValid ? '' : 'visible'}`}>{emailErrorMessage}</span>
               </label>
               <label className="form__label">
                 <span className="form__label-text">Пароль</span>
-                <input name="password" className="form__input" onChange={handlePasswordChange} value={password || ''} type="password" autoComplete="off" placeholder="Введите пароль" minLength="4" required/>
+                <input
+                  name="password"
+                  className="form__input"
+                  onChange={handlePasswordChange}
+                  value={password || ''}
+                  type="password"
+                  autoComplete="off"
+                  placeholder="Введите пароль"
+                  minLength="4"
+                  required
+                />
                 <span className={`form__error form__error_${isPasswordValid ? '' : 'visible'}`}>{passwordErrorMessage}</span>
               </label>
             </div>
-            <button disabled={!isFormValid ? true : ''} type="submit" className={`button form__submit-button form__submit-button_type_login`} value="Войти">Войти</button>
+            <button
+              disabled={!isFormValid ? true : ''}
+              type="submit"
+              className={`button form__submit-button form__submit-button_type_login`}
+              value="Войти"
+            >
+              Войти
+            </button>
             <p className="form__support">
               Ещё не зарегистрированы?&nbsp;
               <Link to="signup" className="link form__link">Регистрация</Link>

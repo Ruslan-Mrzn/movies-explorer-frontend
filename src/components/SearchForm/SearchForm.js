@@ -3,12 +3,9 @@ import './SearchForm.css';
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import { errorTexts } from "../../utils/error-texts";
 
-
-
 function SearchForm({onSearch, toggleDuration}) {
 
   const [queryIsValid, setQueryIsValid] = React.useState(true);
-
   const [query, setQuery] = React.useState('');
 
   const handleQueryChange = (evt) => {
@@ -23,6 +20,7 @@ function SearchForm({onSearch, toggleDuration}) {
     }
     onSearch(query);
   }
+
   return (
     <section className="search">
       <form className="search__form" onSubmit={onSubmit} noValidate={true}>

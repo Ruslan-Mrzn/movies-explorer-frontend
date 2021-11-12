@@ -5,11 +5,8 @@ import Navigation from "../Navigation/Navigation";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
-
 import mainApi from "../../utils/MainApi";
-
 import { getFilteredMovies, filterByDuration } from "../../utils/utils";
-
 import './SavedMovies.css';
 
 function SavedMovies({deleteMovie, onClickMenu, isMenuOpened, authorized, savedMovies}) {
@@ -49,7 +46,7 @@ function SavedMovies({deleteMovie, onClickMenu, isMenuOpened, authorized, savedM
         console.error(`Ошибка ${err.status}`);
       })
       .finally(() => setIsLoading(false))
-  }, [])
+  }, [deleteMovie])
 
   return (
     <div className="movies-page">

@@ -1,6 +1,5 @@
 import React from "react";
 import earthImage from '../../images/earth-image.svg'
-
 import './Promo.css';
 
 function Promo() {

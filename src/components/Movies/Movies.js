@@ -5,7 +5,6 @@ import Navigation from "../Navigation/Navigation";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
-
 import './Movies.css';
 
 function Movies({toggleSaveMovie, savedMovies, toggleDuration, isServerError, isLoading, onClickMenu, isMenuOpened, authorized, data, onSearch}) {

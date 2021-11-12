@@ -1,18 +1,13 @@
 import React from "react";
 import { useLocation } from 'react-router-dom';
-
 import './MoviesCard.css';
-
 import { transformFilmDuration } from "../../utils/utils";
 
 function MoviesCard({card, isSaved, toggleSaveMovie, deleteMovie}) {
   const location = useLocation();
 
-  console.log(isSaved);
-
   const handleToggleSave = (evt) => {
     evt.preventDefault();
-    console.log(card);
     toggleSaveMovie(isSaved, card);
   }
 
@@ -20,8 +15,6 @@ function MoviesCard({card, isSaved, toggleSaveMovie, deleteMovie}) {
     evt.preventDefault();
     deleteMovie(card)
   }
-
-
 
   return (
     <li className="movie-card">
@@ -64,7 +57,6 @@ function MoviesCard({card, isSaved, toggleSaveMovie, deleteMovie}) {
               aria-label="удалить фильм из сохранных"
               title="удалить фильм"
             >
-
             </button>
           }
           <span className="movie-card__duration">{transformFilmDuration(card.duration)}</span>

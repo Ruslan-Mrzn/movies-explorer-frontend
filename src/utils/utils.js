@@ -18,7 +18,6 @@ export const filterByDuration = (movies) => {
 }
 
 export const checkIsMovieSaved = (cardId, savedMovies) => {
-  console.log(savedMovies.some(savedMovie => JSON.stringify(savedMovie.movieId) === JSON.stringify(cardId)));
   return savedMovies.some(savedMovie => JSON.stringify(savedMovie.movieId) === JSON.stringify(cardId))
 }
 

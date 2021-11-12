@@ -1,10 +1,7 @@
 import React from "react";
-
 import './FilterCheckbox.css';
 
 function FilterCheckbox({toggleDuration}) {
-
-
   return (
   <label className="filter">
     <span className="filter__text">

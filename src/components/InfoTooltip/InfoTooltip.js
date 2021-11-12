@@ -32,7 +32,6 @@ function InfoTooltip({isOpen, onClose, message}) {
     }
   }, [isOpen, handleEscClose, handleOverlayClose])
 
-
   return (
     <article className={`popup ${isOpen ? 'popup_opened' : ''}`}>
       <div className="popup__container">

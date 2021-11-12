@@ -13,14 +13,12 @@ import mainApi from "../../utils/MainApi";
 import moviesApi from "../../utils/MoviesApi";
 import { getFilteredMovies } from "../../utils/utils";
 import { filterByDuration } from "../../utils/utils";
-
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { Route, Switch} from 'react-router-dom';
 import { useHistory } from 'react-router';
 
 function App() {
   const history = useHistory();
-
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isWaitingApiRequest, setIsWaitingApiRequest] = React.useState(false);
@@ -36,6 +34,7 @@ function App() {
   const [isServerError, setIsServerError] = React.useState(false);
   const [isShortFilm, setIsShortFilm] = React.useState(false);
 
+  // нажатие на кнопку Зарегистрироваться на странице регистрации
   const register = (name, email, password) => {
     setIsWaitingApiRequest(true);
     mainApi.createUser(name, email, password)
@@ -59,6 +58,7 @@ function App() {
       })
   }
 
+  //нажатие на кнопку Войти на странице авторизации
   const login = (email, password) => {
     setIsWaitingApiRequest(true);
     mainApi.login(email, password)
@@ -73,7 +73,7 @@ function App() {
         console.error(`Ошибка ${err.status}`);
         err.json()
           .then((json) => {
-            setMessage(json.message);
+            setMessage(`Ошибка! ${json.message}`);
             setIsInfoPopupOpened(true);
           })
       })
@@ -82,6 +82,7 @@ function App() {
       })
   }
 
+  // нажатие на кнопку Редактировать на странице профиля
   const updateProfile = (name, email) => {
     setIsWaitingApiRequest(true);
     mainApi.updateProfile(name, email)
@@ -94,7 +95,6 @@ function App() {
       console.error(`Ошибка ${err.status}`);
       err.json()
         .then((json) => {
-          console.log(json)
           setMessage(`Ошибка! ${json.message}`);
           setIsInfoPopupOpened(true);
         })
@@ -104,22 +104,21 @@ function App() {
     })
   }
 
+  // нажатие на кнопку Выйти из аккаунта на странице профиля
   const logout = () => {
     setIsWaitingApiRequest(true)
     mainApi.logout()
       .then((res) => {
         setMessage(res.message);
         setIsInfoPopupOpened(true);
+        localStorage.removeItem('localStorageMovies')
+        localStorage.removeItem('localStorageFilteredMovies')
         history.push({
           pathname: '/'
         });
       })
       .catch((err) => {
         console.error(`Ошибка ${err.status}`);
-        err.json()
-          .then((json) => {
-            console.log(json)
-          })
       })
       .finally(() => {
         setCurrentUser({});
@@ -132,7 +131,7 @@ function App() {
     setIsMenuOpened(!isMenuOpened);
   }
 
-  // переключение чек-бокса короткометражки
+  // переключение чек-бокса короткометражки для страницы фильмов
   const toggleDuration = () => {
     setIsShortFilm(!isShortFilm)
   }
@@ -145,37 +144,27 @@ function App() {
     }
     // чтобы ошибка не висела постоянно
     setIsServerError(false);
-    // для отрисовки результата по нажатию на поиск
-
     // по условию задачи должен быть лоадер
     setIsLoading(true)
     // при первом поиске или если локальное хранилище было очищено
     if(!localStorage.getItem('localStorageMovies')) {
-      console.log('не вижу сохранённых фильмов')
       moviesApi.getInitialMovies()
       .then((initialsMovies) => {
-        console.log('задаю фильтр после запроса на сервер')
         localStorage.setItem('localStorageMovies', JSON.stringify(initialsMovies));
         localStorage.setItem('localStorageFilteredMovies', JSON.stringify(getFilteredMovies(initialsMovies, searchQuery)));
-        // setFilteredMovies();
         setIsFirstSearch(true);
         setIsSearched(!isSearched);
       })
       .catch((err) => {
         console.error(`Ошибка ${err.status}`);
         setIsServerError(true);
-        // setMessage(errorTexts.default);
-        // setIsInfoPopupOpened(true);
       })
       .finally(() => setIsLoading(false));
       return;
       // если уже поиск был и данные лежат в локальном хранилище
     } else if(localMovies) {
       setIsSearched(!isSearched);
-      console.log('вижу сохраненные фильмы');
-      console.log('обновляю фильтр из локалки');
       localStorage.setItem('localStorageFilteredMovies', JSON.stringify(getFilteredMovies(localMovies, searchQuery)));
-      // setFilteredMovies();
       setIsLoading(false);
     }
   }
@@ -184,7 +173,6 @@ function App() {
 
   // кнопка сохранить фильм отправляет запрос createMovie на сервер и добавляет заливку
   // эта кнопка функционирует на странице фильмов
-  // параметр попробуем задать на MovieCardList
   const toggleSaveMovie = (isSaved, movie) => {
     !isSaved ?
     mainApi.saveMovie(movie)
@@ -199,6 +187,8 @@ function App() {
             .then(json => console.error(json.message));
       })
     :
+    // нажатие на кнопку уже сохраненного фильма отправляет запрос deleteMovie и убирает заливку
+    // эта кнопка функционирует на странице фильмов
     mainApi.deleteMovie(movie.id)
       .then(() =>
         mainApi.getSavedMovies()
@@ -212,6 +202,7 @@ function App() {
       })
   }
 
+  // нажатие на кнопку удалить фильм на странице сохраненных фильмов
   const deleteMovie = (movie) => {
     mainApi.deleteMovie(movie.movieId)
     .then(() => setSavedMovies(savedMovies.filter(savedMovie => savedMovie.movieId !== movie.movieId)))
@@ -219,34 +210,18 @@ function App() {
       console.error(`Ошибка ${err.status}`);
     })
   }
-  // нажатие на кнопку уже сохраненного фильма отправляет запрос deleteMovie и убирает заливку
-  // эта кнопка функционирует на странице фильмов
-
-  // сохраненные фильмы получаем отправкой запроса getMovies при монтировании компоенента savedMovies
-
-
   /* --------------------------------------- */
 
-
+  // нажатие на кнопку Назад на 404-й странице
   const goBack = () => {
     history.goBack();
   }
-
-
-  // React.useEffect(() => {
-  //   localStorage.removeItem('localStorageMovies')
-  //   localStorage.removeItem('localStorageFilteredMovies')
-  //   console.log(localStorage.getItem('localStorageMovies'))
-  //   console.log('type', typeof JSON.parse(localStorage.getItem('localStorageMovies')))
-  //   console.log(Array.isArray(JSON.parse(localStorage.getItem('localStorageMovies'))))
-  // }, [])
 
   // после удачного первого поиска, дальнейший поиск ведется
   // по фильмам из локального хранилища, без обращения к серверу за данными
   React.useEffect(() => {
     const initialMovies = JSON.parse(localStorage.getItem('localStorageMovies'))
     if(!localMovies && initialMovies) {
-      console.log('задаю сохранённые фильмы')
       setLocalMovies(initialMovies)
     }
 
@@ -256,7 +231,6 @@ function App() {
   // результат поиска сохраняется и обновляется
   React.useEffect(() => {
     const initialFilteredMovies = JSON.parse(localStorage.getItem('localStorageFilteredMovies'))
-    console.log('обновляю отфильтрованные фильмы')
     // если ищем короткометражки (сбрасывается при обновлении страницы)
     if(isShortFilm) {
       setFilteredMovies(filterByDuration(initialFilteredMovies))
@@ -272,10 +246,7 @@ function App() {
     [mainApi.getCurrentUser(), mainApi.getSavedMovies()])
     .then(([user, savedMovies]) => {
       setCurrentUser(Object.assign(currentUser, user));
-      console.log(currentUser);
-
       setSavedMovies(savedMovies);
-      console.log(savedMovies)
     })
     .catch((err) => {
       console.error(`Ошибка ${err.status} в промисол`);

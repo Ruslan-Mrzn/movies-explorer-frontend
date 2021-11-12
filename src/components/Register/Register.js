@@ -26,6 +26,7 @@ function Register({onSubmit, isLoading}) {
     setName(evt.target.value);
     setIsNameValid(evt.target.validity.valid && checkIsName(evt.target.value));
     setNameErrorMessage(evt.target.validationMessage);
+
     if(evt.target.validity.valid && !checkIsName(evt.target.value)) {
       setNameErrorMessage(`Имя должно содержать только латинские или кириллические символы, пробел или дефис`)
     }
@@ -35,6 +36,7 @@ function Register({onSubmit, isLoading}) {
     setEmail(evt.target.value);
     setIsEmailValid(evt.target.validity.valid && checkIsEmail(evt.target.value));
     setEmailErrorMessage(evt.target.validationMessage);
+
     if(evt.target.validity.valid && !checkIsEmail(evt.target.value)) {
       setEmailErrorMessage(`Проверьте корректность указанной электронной почты`)
     }
@@ -73,28 +75,63 @@ function Register({onSubmit, isLoading}) {
             <div className="form__labels-block">
               <label className="form__label">
                 <span className="form__label-text">Имя</span>
-                <input name="name" className="form__input" onChange={handleNameChange} value={name || ''} type="text" autoComplete="off" placeholder="Введите имя" minLength="2" maxLength="30" required/>
+                <input
+                  name="name"
+                  className="form__input"
+                  onChange={handleNameChange}
+                  value={name || ''}
+                  type="text"
+                  autoComplete="off"
+                  placeholder="Введите имя"
+                  minLength="2" maxLength="30"
+                  required
+                />
                 <span className={`form__error form__error_${isNameValid ? '' : 'visible'}`}>{nameErrorMessage}</span>
               </label>
               <label className="form__label">
                 <span className="form__label-text">E-mail</span>
-                <input name="email" className="form__input" onChange={handleEmailChange} value={email || ''} type="email" autoComplete="off" placeholder="Введите почту" required/>
+                <input
+                  name="email"
+                  className="form__input"
+                  onChange={handleEmailChange}
+                  value={email || ''}
+                  type="email"
+                  autoComplete="off"
+                  placeholder="Введите почту"
+                  required
+                />
                 <span className={`form__error form__error_${isEmailValid ? '' : 'visible'}`}>{emailErrorMessage}</span>
               </label>
               <label className="form__label">
                 <span className="form__label-text">Пароль</span>
-                <input name="password" className="form__input" onChange={handlePasswordChange} value={password || ''} type="password" autoComplete="off" placeholder="Введите пароль" minLength="4" required/>
+                <input
+                  name="password"
+                  className="form__input"
+                  onChange={handlePasswordChange}
+                  value={password || ''}
+                  type="password"
+                  autoComplete="off"
+                  placeholder="Введите пароль"
+                  minLength="4"
+                  required
+                />
                 <span className={`form__error form__error_${isPasswordValid ? '' : 'visible'}`}>{passwordErrorMessage}</span>
               </label>
             </div>
-            <button disabled={!isFormValid ? true : ''} type="submit" className={`button form__submit-button form__submit-button_type_register`} value="Зарегистрироваться">Зарегистрироваться</button>
+            <button
+              disabled={!isFormValid ? true : ''}
+              type="submit"
+              className={`button form__submit-button form__submit-button_type_register`}
+              value="Зарегистрироваться"
+            >
+              Зарегистрироваться
+            </button>
             <p className="form__support">
               Уже зарегистрированы?&nbsp;
               <Link to="signin" className="link form__link">Войти</Link>
             </p>
           </form>
         }
-
       </div>
     </main>
   )

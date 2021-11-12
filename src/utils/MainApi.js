@@ -135,7 +135,6 @@ class MainApi {
   }
 }
 
-
 // экспортируем только экземпляр класса
 const mainApi = new MainApi({
   baseUrl: 'http://localhost:3000/api',

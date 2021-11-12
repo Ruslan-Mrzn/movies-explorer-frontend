@@ -1,18 +1,13 @@
 import React from "react";
 import { useLocation } from 'react-router-dom';
-
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
-
 import './MoviesCardList.css';
 import { errorTexts } from "../../utils/error-texts";
 import { checkIsMovieSaved } from "../../utils/utils";
 
-
-
-
 function MoviesCardList({toggleSaveMovie, deleteMovie, isLoading, data, isServerError, savedMovies}) {
-  console.log(savedMovies);
+
   const location = useLocation();
 
   // проверим ширину контентной области
@@ -30,17 +25,13 @@ function MoviesCardList({toggleSaveMovie, deleteMovie, isLoading, data, isServer
 
   }, [setScreenWidth]);
 
-
-
   // при нажатии на кнопку "Ёще"
   const handleShowMoreCards = () => {
     setSliceQuantity(sliceQuantity+addQuantity);
   }
 
   React.useEffect(() => {
-
     window.addEventListener('resize', handleResizeWidth);
-
   }, [handleResizeWidth]);
 
   // зададим количество отображаемых и добавляемых карточек
@@ -60,11 +51,6 @@ function MoviesCardList({toggleSaveMovie, deleteMovie, isLoading, data, isServer
       setAddQuantity(4);
     }
   }, [screenWidth]);
-
-  React.useEffect(() => {
-
-  })
-
 
   return (
     <section className="movies">

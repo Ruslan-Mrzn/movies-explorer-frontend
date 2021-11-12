@@ -6,10 +6,10 @@ import { useHistory } from 'react-router-dom';
 
 
 const ProtectedRoute = ({ path, children }) => {
-  const history = useHistory();
-  //const [isWaitingApiRequest, setIsWaitingApiRequest] = React.useState(false);
-  const [isLogged, setIsLogged] = React.useState(false);
 
+  const history = useHistory();
+
+  const [isLogged, setIsLogged] = React.useState(false);
 
   React.useEffect(() => {
     mainApi.getCurrentUser()
@@ -23,9 +23,6 @@ const ProtectedRoute = ({ path, children }) => {
       });
     })
   }, [history])
-
-
-
 
   return (
     <Route exact path={path}>
