@@ -137,7 +137,7 @@ class MainApi {
 
 // экспортируем только экземпляр класса
 const mainApi = new MainApi({
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'https://api.murzin.ruslan.nomoredomains.monster',
   credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
