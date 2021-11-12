@@ -17,7 +17,6 @@ class MoviesApi {
     return fetch(this._baseUrl, {
       method: 'GET',
       headers: this._headers,
-      // credentials: 'include', // теперь куки посылаются вместе с запросом
     })
     .then(this._checkResponse)
   }
