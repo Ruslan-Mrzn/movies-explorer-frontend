@@ -8,7 +8,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { checkIsEmail, checkIsName } from '../../utils/utils';
 import './Profile.css';
 
-function Profile({logout, isLoading, onSubmit, onClickMenu, isMenuOpened, authorized}) {
+function Profile({logout, onSubmit, onClickMenu, isMenuOpened, authorized}) {
 
   const currentUser = React.useContext(CurrentUserContext);
 
@@ -53,6 +53,7 @@ function Profile({logout, isLoading, onSubmit, onClickMenu, isMenuOpened, author
     setIsFormValid(isFormEdit && name && email && isNameValid && isEmailValid && (currentUser.name !== name || currentUser.email !== email))
   }, [name, email, isNameValid, isEmailValid, currentUser, isFormEdit])
 
+
   React.useEffect(() => {
     setIsUpdating(true)
     mainApi.getCurrentUser()
@@ -64,7 +65,7 @@ function Profile({logout, isLoading, onSubmit, onClickMenu, isMenuOpened, author
         console.error(`Ошибка ${err.status}`);
       })
       .finally(() => setIsUpdating(false))
-  }, []);
+  }, [onSubmit]);
 
   return (
     <>
@@ -74,7 +75,7 @@ function Profile({logout, isLoading, onSubmit, onClickMenu, isMenuOpened, author
       </Header>
       <main className="profile">
         {
-          (isLoading || isUpdating || !currentUser.name) ? <Preloader />
+          (isUpdating || isUpdating || !currentUser.name) ? <Preloader />
           :
           <div className="profile__wrapper">
 

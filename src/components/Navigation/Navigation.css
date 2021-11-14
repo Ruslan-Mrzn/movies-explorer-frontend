@@ -73,7 +73,7 @@
   top:0;
   right: 0;
   background-color: #202020;
-  z-index: 2;
+  z-index: 20;
 }
 
 .navigation__item {
@@ -117,7 +117,7 @@
     border: none;
     background-color: transparent;
     color: white;
-    z-index: 5;
+    z-index: 30;
   }
 
   .navigation__menu-toggle::before {

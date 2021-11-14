@@ -17,6 +17,12 @@ export const filterByDuration = (movies) => {
   })
 }
 
+export const setUserSavedMovies = (movies, user) => {
+  return movies.filter((movie) => {
+    return JSON.stringify(movie.owner) === JSON.stringify(user._id);
+  })
+}
+
 export const checkIsMovieSaved = (cardId, savedMovies) => {
   return savedMovies.some(savedMovie => JSON.stringify(savedMovie.movieId) === JSON.stringify(cardId))
 }

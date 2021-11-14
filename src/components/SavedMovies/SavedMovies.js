@@ -6,16 +6,19 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import mainApi from "../../utils/MainApi";
-import { getFilteredMovies, filterByDuration } from "../../utils/utils";
+import { getFilteredMovies, filterByDuration, setUserSavedMovies } from "../../utils/utils";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import './SavedMovies.css';
 
 function SavedMovies({deleteMovie, onClickMenu, isMenuOpened, authorized, savedMovies}) {
 
-  const [movies, setMovies] = React.useState(savedMovies)
+  const currentUser = React.useContext(CurrentUserContext);
+
+  const [movies, setMovies] = React.useState(savedMovies.length ? savedMovies : JSON.parse(localStorage.getItem('localStorageSavedMovies')) || []);
   const [shortFilms, setShortFilms] = React.useState([]);
   const [isShortFilms, setIsShortFilms] = React.useState(false);
-  const [filteredMovies, setFilteredMovies] = React.useState(savedMovies);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [filteredMovies, setFilteredMovies] = React.useState(JSON.parse(localStorage.getItem('localStorageSavedMovies')) || []);
+  // const [isLoading, setIsLoading] = React.useState(false);
 
   const getSearchedMovies = (searchQuery) => {
     if(!searchQuery) {
@@ -24,29 +27,29 @@ function SavedMovies({deleteMovie, onClickMenu, isMenuOpened, authorized, savedM
     setFilteredMovies(getFilteredMovies(movies, searchQuery))
   }
 
-  React.useEffect(() => {
-    if(isShortFilms) {
-      setShortFilms(filterByDuration(filteredMovies))
-    }
-
-  }, [filteredMovies, isShortFilms])
-
   const toggleFilmsDuration = () => {
     setIsShortFilms(!isShortFilms)
   }
 
   React.useEffect(() => {
-    setIsLoading(true);
-    mainApi.getSavedMovies()
-      .then(savedMovies => {
-        setFilteredMovies(savedMovies);
-        setMovies(savedMovies);
-      })
+    if(isShortFilms) {
+      setShortFilms(filterByDuration(filteredMovies))
+    }
+  }, [filteredMovies, isShortFilms])
+
+  React.useEffect(() => {
+    //setMovies(JSON.parse(localStorage.getItem('localStorageSavedMovies')))
+
+      mainApi.getSavedMovies()
+        .then(savedMovies => {
+          setFilteredMovies(setUserSavedMovies(savedMovies, currentUser));
+          setMovies(setUserSavedMovies(savedMovies, currentUser));
+        })
+
       .catch((err) => {
         console.error(`Ошибка ${err.status}`);
       })
-      .finally(() => setIsLoading(false))
-  }, [deleteMovie])
+  }, [deleteMovie, currentUser])
 
   return (
     <div className="movies-page">
@@ -55,7 +58,7 @@ function SavedMovies({deleteMovie, onClickMenu, isMenuOpened, authorized, savedM
         <Navigation authorized={authorized} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened}/>
       </Header>
       <SearchForm onSearch={getSearchedMovies} toggleDuration={toggleFilmsDuration} isShortFilms={isShortFilms} />
-      <MoviesCardList isLoading={isLoading} deleteMovie={deleteMovie} savedMovies={isShortFilms ? shortFilms : filteredMovies} />
+      <MoviesCardList deleteMovie={deleteMovie} savedMovies={isShortFilms ? shortFilms : filteredMovies} />
       <Footer />
     </div>
   );

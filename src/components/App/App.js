@@ -11,7 +11,7 @@ import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import mainApi from "../../utils/MainApi";
 import moviesApi from "../../utils/MoviesApi";
-import { getFilteredMovies } from "../../utils/utils";
+import { getFilteredMovies, setUserSavedMovies } from "../../utils/utils";
 import { filterByDuration } from "../../utils/utils";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { Route, Switch} from 'react-router-dom';
@@ -19,7 +19,7 @@ import { useHistory } from 'react-router';
 
 function App() {
   const history = useHistory();
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState(JSON.parse(localStorage.getItem('currentUser')) || null);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isWaitingApiRequest, setIsWaitingApiRequest] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -39,19 +39,20 @@ function App() {
     setIsWaitingApiRequest(true);
     mainApi.createUser(name, email, password)
       .then((user) => {
-        setCurrentUser(user);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
         setLoggedIn(true);
         history.push({
           pathname: '/movies'
         });
       })
       .catch((err) => {
-        console.error(`Ошибка ${err.status}`);
+        console.error(`Статус ошибки: ${err.status ? err.status : 'неизвестен. Проверьте соединение с интернетом'}`);
         err.json()
-          .then((json) => {
-            setMessage(json.message);
-            setIsInfoPopupOpened(true);
-          })
+        .then((json) => {
+          setMessage(`Ошибка! ${json.message}`);
+          setIsInfoPopupOpened(true);
+        })
       })
       .finally(() => {
         setIsWaitingApiRequest(false);
@@ -63,19 +64,20 @@ function App() {
     setIsWaitingApiRequest(true);
     mainApi.login(email, password)
       .then((user) => {
-        setCurrentUser(user);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
         setLoggedIn(true);
         history.push({
           pathname: '/movies'
         });
       })
       .catch((err) => {
-        console.error(`Ошибка ${err.status}`);
+        console.error(`Статус ошибки: ${err.status ? err.status : 'неизвестен. Проверьте соединение с интернетом'}`);
         err.json()
-          .then((json) => {
-            setMessage(`Ошибка! ${json.message}`);
-            setIsInfoPopupOpened(true);
-          })
+        .then((json) => {
+          setMessage(`Ошибка! ${json.message}`);
+          setIsInfoPopupOpened(true);
+        })
       })
       .finally(() => {
         setIsWaitingApiRequest(false);
@@ -84,23 +86,20 @@ function App() {
 
   // нажатие на кнопку Редактировать на странице профиля
   const updateProfile = (name, email) => {
-    setIsWaitingApiRequest(true);
     mainApi.updateProfile(name, email)
     .then((user) => {
-      setCurrentUser(user);
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
       setMessage("Данные успешно обновлены");
       setIsInfoPopupOpened(true);
     })
     .catch((err) => {
-      console.error(`Ошибка ${err.status}`);
+      console.error(`Статус ошибки: ${err.status ? err.status : 'неизвестен. Проверьте соединение с интернетом'}`);
       err.json()
-        .then((json) => {
-          setMessage(`Ошибка! ${json.message}`);
-          setIsInfoPopupOpened(true);
-        })
-    })
-    .finally(() => {
-      setIsWaitingApiRequest(false);
+      .then((json) => {
+        setMessage(`Ошибка! ${json.message}`);
+        setIsInfoPopupOpened(true);
+      })
     })
   }
 
@@ -111,14 +110,16 @@ function App() {
       .then((res) => {
         setMessage(res.message);
         setIsInfoPopupOpened(true);
-        localStorage.removeItem('localStorageMovies')
-        localStorage.removeItem('localStorageFilteredMovies')
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('localStorageMovies');
+        localStorage.removeItem('localStorageFilteredMovies');
+        localStorage.removeItem('localStorageSavedMovies');
         history.push({
           pathname: '/'
         });
       })
       .catch((err) => {
-        console.error(`Ошибка ${err.status}`);
+        console.error(`Статус ошибки: ${err.status}`);
       })
       .finally(() => {
         setCurrentUser({});
@@ -127,9 +128,9 @@ function App() {
       });
   }
 
-  const onClickMenu = (isMenuOpened) => {
+  const onClickMenu = React.useCallback(() => {
     setIsMenuOpened(!isMenuOpened);
-  }
+  }, [isMenuOpened])
 
   // переключение чек-бокса короткометражки для страницы фильмов
   const toggleDuration = () => {
@@ -156,7 +157,7 @@ function App() {
         setIsSearched(!isSearched);
       })
       .catch((err) => {
-        console.error(`Ошибка ${err.status}`);
+        console.error(`Статус ошибки: ${err.status}`);
         setIsServerError(true);
       })
       .finally(() => setIsLoading(false));
@@ -176,38 +177,45 @@ function App() {
   const toggleSaveMovie = (isSaved, movie) => {
     !isSaved ?
     mainApi.saveMovie(movie)
-      .then(() =>
+      .then(() => {
         mainApi.getSavedMovies()
-          .then(movies => setSavedMovies(movies))
-          .catch(err => console.error(err))
-      )
+          .then(movies => {
+            localStorage.setItem('localStorageSavedMovies', JSON.stringify(setUserSavedMovies(movies, currentUser)));
+            setSavedMovies(JSON.parse(localStorage.getItem('localStorageSavedMovies')));
+          })
+
+      })
       .catch((err) => {
-        console.error(`Ошибка ${err.status}`)
-          err.json()
-            .then(json => console.error(json.message));
+        console.error(`Статус ошибки: ${err.status}`);
       })
     :
     // нажатие на кнопку уже сохраненного фильма отправляет запрос deleteMovie и убирает заливку
     // эта кнопка функционирует на странице фильмов
     mainApi.deleteMovie(movie.id)
-      .then(() =>
+      .then(() => {
         mainApi.getSavedMovies()
-          .then(movies => setSavedMovies(movies))
-          .catch((err) => {
-            console.error(`Ошибка ${err.status}`);
+          .then(movies => {
+            localStorage.setItem('localStorageSavedMovies', JSON.stringify(setUserSavedMovies(movies, currentUser)));
+            setSavedMovies(JSON.parse(localStorage.getItem('localStorageSavedMovies')));
           })
-      )
+      })
       .catch((err) => {
-        console.error(`Ошибка ${err.status}`);
+        console.error(`Статус ошибки: ${err.status}`);
       })
   }
 
   // нажатие на кнопку удалить фильм на странице сохраненных фильмов
   const deleteMovie = (movie) => {
     mainApi.deleteMovie(movie.movieId)
-    .then(() => setSavedMovies(savedMovies.filter(savedMovie => savedMovie.movieId !== movie.movieId)))
+    .then(() => {
+      mainApi.getSavedMovies()
+        .then(movies => {
+          localStorage.setItem('localStorageSavedMovies', JSON.stringify(setUserSavedMovies(movies, currentUser)));
+          setSavedMovies(JSON.parse(localStorage.getItem('localStorageSavedMovies')));
+        })
+    })
     .catch((err) => {
-      console.error(`Ошибка ${err.status}`);
+      console.error(`Статус ошибки: ${err.status}`);
     })
   }
   /* --------------------------------------- */
@@ -241,30 +249,37 @@ function App() {
 
   }, [isShortFilm, isSearched])
 
-  React.useEffect(() => {
-   Promise.all(
-    [mainApi.getCurrentUser(), mainApi.getSavedMovies()])
-    .then(([user, savedMovies]) => {
-      setCurrentUser(Object.assign(currentUser, user));
-      setSavedMovies(savedMovies);
-    })
-    .catch((err) => {
-      console.error(`Ошибка ${err.status} в промисол`);
-
-    })
-
-  }, [currentUser])
 
   React.useEffect(() => {
-
-    mainApi.getCurrentUser()
-      .then(() => {
-        setLoggedIn(true)
+    Promise.all([mainApi.getCurrentUser(), mainApi.getSavedMovies()])
+      .then(([user, savedMovies]) => {
+        if(!localStorage.getItem('currentUser') || localStorage.getItem('currentUser') !== JSON.stringify(user)) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
+        }
+        localStorage.setItem('localStorageSavedMovies', JSON.stringify(setUserSavedMovies(savedMovies, currentUser)));
+        setSavedMovies(JSON.parse(localStorage.getItem('localStorageSavedMovies')));
+        console.log('Сходил за сохраненными фильмами')
       })
       .catch(err => {
-        console.error(`Ошибка ${err.status}`)
+        console.error(`Статус ошибки: ${err.status}`);
         setLoggedIn(false)
+      })
+  }, [currentUser])
 
+  // сохраним данные пользователя в localStorage
+  React.useEffect(() => {
+    mainApi.getCurrentUser()
+      .then((currentUser) => {
+        if(!localStorage.getItem('currentUser') || localStorage.getItem('currentUser') !== JSON.stringify(currentUser)) {
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          setCurrentUser(localStorage.setItem('currentUser'));
+        }
+        setLoggedIn(true);
+      })
+      .catch(err => {
+        console.error(`Статус ошибки: ${err.status}`);
+        setLoggedIn(false)
       })
   }, [])
 
@@ -286,10 +301,10 @@ function App() {
               isLoading={isLoading}
               data={filteredMovies}
               savedMovies={savedMovies}
-              authorized={true}
-              onClickMenu={onClickMenu}
+              authorized={loggedIn}
               isMenuOpened={isMenuOpened}
               onSearch={getMovies}
+              onClickMenu={onClickMenu}
             />
           </ProtectedRoute>
 
@@ -297,22 +312,34 @@ function App() {
             <SavedMovies
               deleteMovie={deleteMovie}
               savedMovies={savedMovies}
-              authorized={true}
-              onClickMenu={onClickMenu}
+              authorized={loggedIn}
               isMenuOpened={isMenuOpened}
+              onClickMenu={onClickMenu}
             />
           </ProtectedRoute>
 
           <ProtectedRoute path="/profile">
-            <Profile onSubmit={updateProfile} logout={logout} isLoading={isWaitingApiRequest} authorized={true} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
+            <Profile
+              onSubmit={updateProfile}
+              onClickMenu={onClickMenu}
+              logout={logout}
+              authorized={loggedIn}
+              isMenuOpened={isMenuOpened}
+            />
           </ProtectedRoute>
 
           <Route path="/signup">
-            <Register onSubmit={register} isLoading={isWaitingApiRequest}/>
+            <Register
+              onSubmit={register}
+              isLoading={isWaitingApiRequest}
+            />
           </Route>
 
           <Route path="/signin">
-            <Login onSubmit={login} isLoading={isWaitingApiRequest}/>
+            <Login
+              onSubmit={login}
+              isLoading={isWaitingApiRequest}
+            />
           </Route>
 
           <ProtectedRoute>

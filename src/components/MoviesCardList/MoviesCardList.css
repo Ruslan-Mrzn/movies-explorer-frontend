@@ -48,7 +48,7 @@
   }
 
   .movies__list {
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(340px, .5fr));
     row-gap: 36px;
     column-gap: 28px;
   }
@@ -65,7 +65,7 @@
   }
 
   .movies__list {
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(270px, .25fr));
     row-gap: 32px;
     column-gap: 20px;
   }

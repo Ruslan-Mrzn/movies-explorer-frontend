@@ -17,6 +17,7 @@ function Login({onSubmit, isLoading}) {
   const [isPasswordValid, setIsPasswordValid] = React.useState(true);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [isLoadingPage, SetIsLoadingPage] = React.useState(true);
 
   const handleEmailChange = (evt) => {
     setEmail(evt.target.value);
@@ -45,10 +46,21 @@ function Login({onSubmit, isLoading}) {
 
   React.useEffect(() => {
     mainApi.getCurrentUser()
-      .then(() => history.push('/movies'))
+      .then((user) => {
+        if(!localStorage.getItem('currentUser') || localStorage.getItem('currentUser') !== JSON.stringify(user)) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        }
+        history.push('/movies')
+      })
+      .catch((err) => {
+        console.error(`Статус ошибки: ${err.status}`, `${err.status === 500 ? 'Сервер временно недоступен' : 'Пожалуйста, зарегистрируйтесь или авторизуйтесь' }`)
+      })
+      .finally(() => SetIsLoadingPage(false))
   }, [history])
 
   return (
+    !isLoadingPage &&
+
     <main className="login">
       <div className="login__wrapper">
         <h1 className="visually-hidden">Страница авторизации</h1>
