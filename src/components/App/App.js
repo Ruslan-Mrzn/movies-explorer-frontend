@@ -259,7 +259,6 @@ function App() {
         }
         localStorage.setItem('localStorageSavedMovies', JSON.stringify(setUserSavedMovies(savedMovies, currentUser)));
         setSavedMovies(JSON.parse(localStorage.getItem('localStorageSavedMovies')));
-        console.log('Сходил за сохраненными фильмами')
       })
       .catch(err => {
         console.error(`Статус ошибки: ${err.status}`);
