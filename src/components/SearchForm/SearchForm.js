@@ -3,7 +3,7 @@ import './SearchForm.css';
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import { errorTexts } from "../../utils/error-texts";
 
-function SearchForm({onSearch, toggleDuration}) {
+function SearchForm({onSearch, toggleDuration, isShortFilms}) {
 
   const [queryIsValid, setQueryIsValid] = React.useState(true);
   const [query, setQuery] = React.useState('');
@@ -29,7 +29,7 @@ function SearchForm({onSearch, toggleDuration}) {
           <span className="search__input-error">{!queryIsValid && errorTexts.emptyQuery}</span>
           <button className="button search__button" type="submit"></button>
         </div>
-        <FilterCheckbox toggleDuration={toggleDuration}/>
+        <FilterCheckbox isShortFilms={isShortFilms} toggleDuration={toggleDuration}/>
       </form>
     </section>
   );

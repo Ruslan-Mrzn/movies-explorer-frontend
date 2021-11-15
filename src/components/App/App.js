@@ -246,7 +246,6 @@ function App() {
     }
     // обычная выдача результата
     setFilteredMovies(initialFilteredMovies)
-
   }, [isShortFilm, isSearched])
 
 
@@ -296,6 +295,7 @@ function App() {
             <Movies
               toggleSaveMovie={toggleSaveMovie}
               toggleDuration={toggleDuration}
+              isShortFilms={isShortFilm}
               isServerError={isServerError}
               isLoading={isLoading}
               data={filteredMovies}
