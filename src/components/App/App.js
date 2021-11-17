@@ -122,7 +122,7 @@ function App() {
         console.error(`Статус ошибки: ${err.status}`);
       })
       .finally(() => {
-        setCurrentUser({});
+        //setCurrentUser({});
         setLoggedIn(false);
         setIsWaitingApiRequest(false)
       });
@@ -225,6 +225,12 @@ function App() {
     history.goBack();
   }
 
+  const redirectToMain = () => {
+    history.push({
+      pathname: '/'
+    });
+  }
+
   // после удачного первого поиска, дальнейший поиск ведется
   // по фильмам из локального хранилища, без обращения к серверу за данными
   React.useEffect(() => {
@@ -291,7 +297,7 @@ function App() {
             <Main authorized={loggedIn} onClickMenu={onClickMenu} isMenuOpened={isMenuOpened} />
           </Route>
 
-          <ProtectedRoute path="/movies">
+          <ProtectedRoute path="/movies" loggedIn={loggedIn}>
             <Movies
               toggleSaveMovie={toggleSaveMovie}
               toggleDuration={toggleDuration}
@@ -307,7 +313,7 @@ function App() {
             />
           </ProtectedRoute>
 
-          <ProtectedRoute path="/saved-movies">
+          <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
             <SavedMovies
               deleteMovie={deleteMovie}
               savedMovies={savedMovies}
@@ -317,7 +323,7 @@ function App() {
             />
           </ProtectedRoute>
 
-          <ProtectedRoute path="/profile">
+          <ProtectedRoute path="/profile" loggedIn={loggedIn}>
             <Profile
               onSubmit={updateProfile}
               onClickMenu={onClickMenu}
