@@ -1,44 +1,68 @@
 import React from "react";
 import { useLocation } from 'react-router-dom';
-
-
 import './MoviesCard.css';
+import { transformFilmDuration } from "../../utils/utils";
 
-function MoviesCard({card}) {
-
+function MoviesCard({card, isSaved, toggleSaveMovie, deleteMovie}) {
   const location = useLocation();
 
-  const [isCardSaved, setIsCardSaved] = React.useState(card.saved)
+  const handleToggleSave = (evt) => {
+    evt.preventDefault();
+    toggleSaveMovie(isSaved, card);
+  }
 
-  const handleOnClick = () => {
-    setIsCardSaved(!card.saved)
+  const handleDeleteMovie = (evt) => {
+    evt.preventDefault();
+    deleteMovie(card)
   }
 
   return (
     <li className="movie-card">
+
       <article className="movie-card__card">
         <div className="movie-card__img-container">
-          <img src={card.poster} alt={card.title} className="movie-card__img" />
+        {
+          location.pathname === '/movies' &&
+          <a className="movie-card__link" href={card.trailerLink} target="_blank" rel="noreferrer">
+            <img src={`https://api.nomoreparties.co${card.image.url}`} alt={card.title} className="movie-card__img" />
+          </a>
+        }
+        {
+          location.pathname === '/saved-movies' &&
+          <a className="movie-card__link" href={card.trailer} target="_blank" rel="noreferrer">
+          <img src={card.image} alt={card.title} className="movie-card__img" />
+          </a>
+        }
         </div>
         <div className="movie-card__text-container">
-          <h2 className="movie-card__title">{card.title}</h2>
+          <h2 className="movie-card__title">{card.nameRU}</h2>
           {
             location.pathname === '/movies' &&
-            <button type="button" className={`button movie-card__save-btn ${isCardSaved ? 'movie-card__save-btn_state_active' : ''}`} aria-label={`${isCardSaved ? 'удалить фильм из сохранных' : 'сохранить фильм'}`}
-            onClick={handleOnClick}
+            <button
+              onClick={handleToggleSave}
+              type="button"
+              className={`button movie-card__save-btn ${isSaved ? 'movie-card__save-btn_state_active' : ''}`}
+              aria-label={`${isSaved ? 'удалить фильм из сохранных' : 'сохранить фильм'}`}
+              title={`${isSaved ? 'удалить фильм из сохранных' : 'сохранить фильм'}`}
             >
             </button>
           }
 
           {
             location.pathname === '/saved-movies' &&
-            <button type="button" className="button movie-card__unsave-btn" aria-label="удалить фильм из сохранных"
-              // onClick={handleOnClick}
-            ></button>
+            <button
+              onClick={handleDeleteMovie}
+              type="button"
+              className="button movie-card__unsave-btn"
+              aria-label="удалить фильм из сохранных"
+              title="удалить фильм"
+            >
+            </button>
           }
-          <span className="movie-card__duration">{card.duration}</span>
+          <span className="movie-card__duration">{transformFilmDuration(card.duration)}</span>
         </div>
       </article>
+
     </li>
   );
 }

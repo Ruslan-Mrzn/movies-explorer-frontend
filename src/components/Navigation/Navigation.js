@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
 
 import './Navigation.css';
 
 
 function Navigation({authorized, isMenuOpened, onClickMenu}) {
+  const location = useLocation();
   const handleOnClickMenu = () => {
     onClickMenu(isMenuOpened);
   }
@@ -27,22 +29,41 @@ function Navigation({authorized, isMenuOpened, onClickMenu}) {
         </button>
         <ul className={`navigation__list navigation__list_state_${isMenuOpened ? 'opened' : 'closed'}`}>
             <li className="navigation__item">
-              <Link to="/" className="link navigation__link navigation__link_type_menu" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
+              <Link
+                to="/"
+                onClick={handleOnClickMenu}
+                className={`link navigation__link navigation__link_type_menu ${location.pathname === '/' ? 'navigation__link_state_active' : ''}`}
+                tabIndex={`${isMenuOpened ? '' : '-1'}`}
+              >
                 Главная
               </Link>
             </li>
             <li className="navigation__item">
-              <Link to="movies" className="link navigation__link navigation__link_type_menu navigation__link_state_active" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
+              <Link
+                to="movies"
+                onClick={handleOnClickMenu}
+                className={`link navigation__link navigation__link_type_menu ${location.pathname === '/movies' ? 'navigation__link_state_active' : ''}`}
+                tabIndex={`${isMenuOpened ? '' : '-1'}`}
+              >
                 Фильмы
               </Link>
             </li>
             <li className="navigation__item">
-              <Link to="saved-movies" className="link navigation__link navigation__link_type_menu" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
+              <Link
+                to="saved-movies"
+                onClick={handleOnClickMenu}
+                className={`link navigation__link navigation__link_type_menu ${location.pathname === '/saved-movies' ? 'navigation__link_state_active' : ''}`}
+                tabIndex={`${isMenuOpened ? '' : '-1'}`}>
                 Сохранённые фильмы
               </Link>
             </li>
             <li className="navigation__item">
-              <Link to="profile" className="link navigation__link navigation__link_type_account" tabIndex={`${isMenuOpened ? '' : '-1'}`}>
+              <Link
+                to="profile"
+                onClick={handleOnClickMenu}
+                className="link navigation__link navigation__link_type_account"
+                tabIndex={`${isMenuOpened ? '' : '-1'}`}
+              >
                 Аккаунт
               </Link>
             </li>

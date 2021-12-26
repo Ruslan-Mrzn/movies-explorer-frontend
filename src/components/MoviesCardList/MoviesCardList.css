@@ -1,10 +1,21 @@
 .movies {
   max-width: 1280px;
+  width: 100%;
   padding: 50px 10px 80px 10px;
   margin: 0 auto;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.movies__error {
+  padding: 0;
+  margin: 0;
+  font-size: 24px;
+  line-height: 30px;
+  color: red;
+  text-align: center;
 }
 
 .movies__list {
@@ -37,7 +48,7 @@
   }
 
   .movies__list {
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(340px, .5fr));
     row-gap: 36px;
     column-gap: 28px;
   }
@@ -54,7 +65,7 @@
   }
 
   .movies__list {
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(270px, .25fr));
     row-gap: 32px;
     column-gap: 20px;
   }

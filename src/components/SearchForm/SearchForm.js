@@ -1,17 +1,35 @@
 import React from "react";
-
 import './SearchForm.css';
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+import { errorTexts } from "../../utils/error-texts";
 
-function SearchForm() {
+function SearchForm({onSearch, toggleDuration, isShortFilms}) {
+
+  const [queryIsValid, setQueryIsValid] = React.useState(true);
+  const [query, setQuery] = React.useState('');
+
+  const handleQueryChange = (evt) => {
+    setQuery(evt.target.value)
+    setQueryIsValid(evt.target.validity.valid);
+  }
+
+  const onSubmit = (evt) => {
+    evt.preventDefault();
+    if (!query) {
+      setQueryIsValid(false)
+    }
+    onSearch(query);
+  }
+
   return (
     <section className="search">
-      <form className="search__form">
+      <form className="search__form" onSubmit={onSubmit} noValidate={true}>
         <div className="search__wrapper">
-          <input className="search__input" type="text" placeholder="Фильм" required/>
+          <input value={query || ''} onChange={handleQueryChange} className="search__input" type="text" placeholder="Фильм" required/>
+          <span className="search__input-error">{!queryIsValid && errorTexts.emptyQuery}</span>
           <button className="button search__button" type="submit"></button>
         </div>
-        <FilterCheckbox />
+        <FilterCheckbox isShortFilms={isShortFilms} toggleDuration={toggleDuration}/>
       </form>
     </section>
   );

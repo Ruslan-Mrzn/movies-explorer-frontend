@@ -29,12 +29,17 @@ body {
 
 /* Buttons hover */
 .button {
-  transition: opacity .4s ease;
+  transition: opacity .4s linear;
 }
 
 .button:hover {
   cursor: pointer;
   opacity: .8;
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: .5;
 }
 /*-------------------------*/
 

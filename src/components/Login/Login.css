@@ -72,20 +72,6 @@
   font-weight: 500;
 }
 
-.form__error {
-  margin-top: 10px;
-  align-self: flex-start;
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 12px;
-  color: #EE3465;
-  visibility: hidden;
-}
-
-.form__error_visible {
-  visibility: visible;
-}
-
 .form__submit-button {
   margin-top: auto;
   align-self: stretch;
